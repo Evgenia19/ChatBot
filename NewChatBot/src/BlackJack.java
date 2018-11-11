@@ -1,21 +1,22 @@
+package bot;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 public class BlackJack {
 
-	private static Random random = new Random();
-	private static Map<String, Integer> listPlayer = new HashMap<String, Integer>();
-	private static Map<String, Integer> listBot = new HashMap<String, Integer>();
-	private static String[] mast = {"Червей", "Пикей", "Крестей", "Бубей"};
-	private static String[] number = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Т", "В", "Д", "К"};
-	private static Integer sumPlayer = 0;
-	private static Integer sumBot = 0;
+	private Random random = new Random();
+	private Map<String, Integer> listPlayer = new HashMap<String, Integer>();
+	private Map<String, Integer> listBot = new HashMap<String, Integer>();
+	private String[] mast = {"Buben", "Chervi", "Piki", "Cresti"};
+	private String[] number = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "B", "D", "K", "T"};
+	private Integer sumPlayer = 0;
+	private Integer sumBot = 0;
 	
-	private static int randomMast(int numb) {
+	private int randomMast(int numb) {
 		return random.nextInt(numb);
 	}
-	private static void getMast(Map<String, Integer> dictPlay) {
+	private void getMast(Map<String, Integer> dictPlay) {
 		int num = randomMast(4);
 		String getMast = mast[num];
 		int numb = randomMast(13);
@@ -32,7 +33,7 @@ public class BlackJack {
 			getMast(dictPlay);
 	}
 	
-	private static int getSum(Map<String, Integer> dictPlay) {
+	private int getSum(Map<String, Integer> dictPlay) {
 		int sum = 0;
 		for(int e : dictPlay.values()) {
 			sum += e;
@@ -40,7 +41,7 @@ public class BlackJack {
 		return sum;
 	}
 	
-	public void BJ() {
+	public void blackJack() {
 		getMast(listBot);
 		getMast(listBot);
 		getMast(listPlayer);
@@ -62,7 +63,7 @@ public class BlackJack {
 		String card = "";
 		for(String e : listPlayer.keySet())
 			card += e + ",  ";
-		return "У вас карты: " + card + "\n" + "Ваши очки: " + sumPlayer.toString();
+		return "You card: " + card + "\n" + "result summ: " + sumPlayer.toString();
 	}
 	
 	public String addCard() {
@@ -74,19 +75,19 @@ public class BlackJack {
 	public String stopCard() {
 		String say = "I have " + sumBot.toString();
 		if(sumPlayer > 21 && sumBot > 21)
-				say += "... Никто не выиграл...";
+				say += "d";
 		else {
 			if(sumPlayer > sumBot) {
 				if (sumPlayer > 21 && sumBot <= 21)
 					say += "... I win";
 				if (sumPlayer <= 21)
-					say += " You win";
+					say += "... You win";
 			}
 			if(sumPlayer == sumBot) {
 				if(listPlayer.size() > listBot.size())
 					say += "... You win";
 				if(listPlayer.size() == listBot.size())
-					say += "... Ничья";
+					say += "... equal";
 				if(listPlayer.size() < listBot.size() )
 					say += "... I win";
 			}

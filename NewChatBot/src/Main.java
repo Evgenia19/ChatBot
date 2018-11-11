@@ -1,3 +1,4 @@
+package bot;
 import java.util.Scanner;
 
 public class Main {
@@ -6,27 +7,25 @@ public class Main {
 		MultiUserBot multiUser = new MultiUserBot();
 		String id = null;
 		Scanner input = new Scanner(System.in);
-		System.out.println("Шаахтер: Введите ваш ник");
+		System.out.println("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
 		while (true) {
-			//try {
+			try {
 				if (input.hasNext()) {
 					String msg = input.nextLine();
 					if (id == null) {
 						if (multiUser.addUser(msg)) {
 							id = msg;
-							//System.out.println(id + ": " + id);
-							System.out.println("\n" + "Шаахтер: Рад свами познакомится" + "\n\n" + id + ": ");
+							System.out.println("\n" + "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ" + "\n\n" + id + ": ");
 						} else
-							System.out.println("\n" + "Шаахтер: Введите другой ник, такой уже есть");
+							System.out.println("\n" + "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 					} else {
-						//System.out.println(id + ": " + msg);
-						User message = multiUser.Users(new User(id, msg));
-						System.out.println("\n" + "Шаахтер: " + message.content + "\n\n" + id + ": ");
+						UserMessage message = multiUser.users(new UserMessage(id, msg, null));
+						System.out.println("\n" + "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: " + message.content + "\n\n" + id + ": ");
 					}
 				}
-			//} catch (Exception e) {
-				//e.printStackTrace();
-			//}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
