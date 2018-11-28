@@ -4,5 +4,4 @@ interface InterfaceGame {
 
 	public String[] getCommand();
 	public void start();
-	public String end();
 }
