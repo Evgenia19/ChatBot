@@ -66,7 +66,6 @@ public class Hang extends Game{
 		if(!correct) {
 			if(symbol == 0) {
 				result += 1;
-				returnEnd();
 				return "You win" + "\n" + getText();
 			}
 			else
@@ -74,11 +73,6 @@ public class Hang extends Game{
 		}
 		else
 			return "You wrong";
-	}
-	
-	public void returnEnd() {
-		getGame(game);
-		getResult(result);
 	}
 	
 	@Override
@@ -89,7 +83,6 @@ public class Hang extends Game{
 		getWord();
 	}
 
-	@Override
 	public String getMsg() {
 		return "lives:" + lives + "\n" + getText();
 	}
