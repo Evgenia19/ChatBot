@@ -10,12 +10,4 @@ public class Card {
 		this.suit = suit;
 		this.number = num;
 	}
-	
-	public int getNumber() {
-		return number.ordinal();
-	}
-	
-	public String getCard(SuitCard suit, NumberCard num) {
-		return suit.toString() + " " + num.toString();
-	}
 }
