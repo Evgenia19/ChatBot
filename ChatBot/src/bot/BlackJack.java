@@ -5,7 +5,6 @@ import java.util.Random;
 
 public class BlackJack extends Game{
 
-	private Card cards;
 	private Random random = new Random();
 	private Map<Card, Integer> listPlayer = new HashMap<Card, Integer>();
 	private Map<Card, Integer> listBot = new HashMap<Card, Integer>();
@@ -80,12 +79,11 @@ public class BlackJack extends Game{
 			sumBot = getSum(listBot);
 		}
 	}
-	
-	@Override
+
 	public String getMsg() {
 		String card = "";
 		for(Card e : listPlayer.keySet())
-			card += e.suit.toString() +  e.number.toString() + ",  ";
+			card += e.suit.toString() + " " + e.number.toString() + ",  ";
 		return "You card: " + card + "\n" + "result summ: " + sumPlayer.toString();
 	}
 	
@@ -133,9 +131,6 @@ public class BlackJack extends Game{
 		listPlayer.clear();
 		sumPlayer = 0;
 		sumBot = 0;
-		getGame(game);
-		getResult(result);
 		return say;
 	}
-
 }
