@@ -6,54 +6,63 @@ import java.util.Map;
 public class ChatBot {
 
 	private ChatBotState state;
-	private GameState game;
 	private String userId;
-	private String[] comand;
-	private Map<ChatBotState, String[]> move = new HashMap<ChatBotState, String[]>();
-	private Map<GameState, String[]> moveGame = new HashMap<GameState, String[]>();
-	private String[] answer;
+	private Map<ChatBotState, String[]> move;
+	private String[] commands;
 	private ChatBotControl chatBotControls;
+	private Moving moving;
+	private BlackJack blackJack;
+	private Game game;
+	
 	
 	ChatBot(String id) {
 		userId = id;
 		state = ChatBotState.Community;
-		answer = new String[]{"21", "hang", "quiz"};
-		move.put(state.PlayGame, answer);
-		answer = new String[]{"start", "stop", "new game", "end", "more", "help"};
-		moveGame.put(game.BlackJack, answer);
-		answer = new String[]{"start","new game", "end", "help"};
-		moveGame.put(game.Hang, answer);
 		chatBotControls = new ChatBotControl();
+		moving = new Moving();
+		move = moving.returnMove();
+		for(ChatBotState e : move.keySet())
+			System.out.println(move.get(e));
 	}
 
 	public UserMessage process(UserMessage msg) {
-		if(msg.content.equals("start"))
-			state = ChatBotState.PlayGame;
-		else if(msg.content.equals("21"))
-			game = GameState.BlackJack;
-		else if(msg.content.equals("hang"))
-			game = GameState.Hang;
+		switch(msg.content) {
+		case "21":
+			state = ChatBotState.BlackJack;
+			return new UserMessage(userId, behavior21(blackJack), move.get(state));
+		case "hang":
+			state = ChatBotState.Hang;
+			return new UserMessage(userId, getBehavior(game), move.get(state));
+		case "quiz":
+			state = ChatBotState.Quiz;
+			return new UserMessage(userId, getBehavior(game), move.get(state));
+		default:
+			break;
+		}
 		
-		if(state == ChatBotState.PlayGame) {
+		if(state != ChatBotState.Community) {
 			if(msg.content.equals("end"))
 				state = ChatBotState.Community;
-			if(game == GameState.BlackJack)
-				return new UserMessage(userId, play21(msg.content), moveGame.get(game.BlackJack));
-			else if(game == GameState.Hang)
-				return new UserMessage(userId, playHang(msg.content), moveGame.get(game.Hang));
+			return new UserMessage(userId, play(msg.content), move.get(state));
 		}
-		return new UserMessage(userId, community(msg.content), move.get(state.PlayGame));
+		return new UserMessage(userId, communication(msg.content), null);
 	}
 
-	private String play21(String msg) {
-		return chatBotControls.game21(msg);
+	private String play(String msg) {
+		return chatBotControls.game(msg, move, state);
 	}
-	
-	private String playHang(String msg) {
-		return chatBotControls.gameHang(msg);
-	}
-	
-	private String community(String msg) {
+
+	private String communication(String msg) {
 		return chatBotControls.getMessage(msg);
+	}
+	
+	private String behavior21(BlackJack game) {
+		game = new BlackJack();
+		return game.getBehavior();
+	}
+	
+	private String getBehavior(Game game) {
+		game = new Hang();
+		return game.getBehavior();
 	}
 }
