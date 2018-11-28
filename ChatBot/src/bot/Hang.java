@@ -1,16 +1,17 @@
 package bot;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Hang extends Game{
 
-	private Hang hang;
 	private Random random = new Random();
+	private Load loadQuestion;
+	private ArrayList<String> words;
 	private String word;
 	private Character[] answer;
 	private Boolean correct = false;
 	private Boolean correctSymbol = false;
-	private String[] words = { "поступок", "экземпляр", "чужестранец", "притяжение" };
 	private int lives = 9;
 	private int symbol;
 	public int result = 0;
@@ -35,8 +36,9 @@ public class Hang extends Game{
 	}
 
 	private void getWord() {
-		int numb = random.nextInt(words.length);
-		word = words[numb];
+		int numb = random.nextInt(words.size());
+		word = words.get(numb);
+		words.remove(numb);
 		symbol = word.length();
 		answer = new Character[symbol];
 		for (int i = 0; i < symbol; i++) {
@@ -82,6 +84,8 @@ public class Hang extends Game{
 	@Override
 	public void start() {
 		game += 1;
+		loadQuestion = new Load();
+		words = loadQuestion.returnWord();
 		getWord();
 	}
 
