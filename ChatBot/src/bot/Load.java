@@ -7,11 +7,11 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 
-public class LoadQuestion {
-	private	String fileName = "questions.txt";
+public class Load {
+	private	String fileQuestion = "questions.txt";
+	private	String fileWord = "words.txt";
 	
-	private ArrayList<Question> loadQuestions() {
-        ArrayList<Question> questions = new ArrayList<>();
+	private String load(String fileName) {
         String content = null;
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(
                 new FileInputStream(fileName), Charset.forName("UTF-8")))) {			
@@ -23,17 +23,20 @@ public class LoadQuestion {
         catch (IOException e) {
         	System.out.println(e.getMessage());
         }
-        if(content == null)
+        return content;
+    }
+	
+	private ArrayList<Question> loadQuestions(String content) {
+		ArrayList<Question> questions = new ArrayList<>();
+		if(content == null)
         	System.out.println("Файл пуст");
         else {
         	for(String q: content.split("\n\n\n")) {
-        		System.out.println(q + "skasika");
-        		System.out.println(makeQuestion(q));
                 questions.add(makeQuestion(q));
         	}
         }
         return questions;
-    }
+	}
 	
     private Question makeQuestion(String raw) {
         String[] lines = raw.split("\n\n");
@@ -44,6 +47,23 @@ public class LoadQuestion {
     }
     
     public ArrayList<Question> returnQuestions() {
-    	return loadQuestions();
+    	String text = load(fileQuestion);
+    	return loadQuestions(text);
+    }
+    
+    private ArrayList<String> loadWords(String content) {
+    	ArrayList<String> words = new ArrayList<String>();
+    	if(content == null)
+        	System.out.println("Файл пуст");
+        else {
+        	for(String q: content.split("\n"))
+        		words.add(q);
+        }
+    	return words;
+    }
+    
+    public ArrayList<String> returnWord() {
+    	String text = load(fileWord);
+    	return loadWords(text);
     }
 }
