@@ -3,51 +3,73 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class BlackJack {
+public class BlackJack extends Game{
 
+	private Card cards;
 	private Random random = new Random();
-	private Map<String, Integer> listPlayer = new HashMap<String, Integer>();
-	private Map<String, Integer> listBot = new HashMap<String, Integer>();
-	private String[] mast = {"Buben", "Chervi", "Piki", "Cresti"};
-	private String[] number = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "B", "D", "K", "T"};
+	private Map<Card, Integer> listPlayer = new HashMap<Card, Integer>();
+	private Map<Card, Integer> listBot = new HashMap<Card, Integer>();
 	private Integer sumPlayer = 0;
 	private Integer sumBot = 0;
+	public int result = 0;
+	public int game= 0;
+	private String[] command;
 	
-	private int randomMast(int numb) {
+	BlackJack() {
+		command = getCommand();
+		returnCommand();
+	}
+    
+    private int randomSuit(int numb) {
 		return random.nextInt(numb);
 	}
-	private void getMast(Map<String, Integer> dictPlay) {
-		int num = randomMast(4);
-		String getMast = mast[num];
-		int numb = randomMast(13);
-		String getNumber = number[numb];
-		String card = getNumber + " " + getMast;
+	
+	private void getMast(Map<Card, Integer> dictPlay) {
+		SuitCard[] suitCard = SuitCard.values();
+		NumberCard[] numberCard = NumberCard.values();
+		int num = randomSuit(4);
+		SuitCard getSuit = suitCard[num];
+		num = randomSuit(13);
+		NumberCard getNumber = numberCard[num];
+		Card card = new Card(getSuit, getNumber);
 		if(!listBot.containsKey(card) & !listPlayer.containsKey(card)) {
-			if(numb > 9)
-				numb = numb - 8;
+			if(num > 9)
+				num = num - 8;
 			else
-				numb = numb + 2;
-			dictPlay.put(card, numb);
+				num = num + 2;
+			dictPlay.put(card, num);
 		}
 		else
 			getMast(dictPlay);
 	}
 	
-	private int getSum(Map<String, Integer> dictPlay) {
+	private int getSum(Map<Card, Integer> dictPlay) {
 		int sum = 0;
 		for(int e : dictPlay.values()) {
 			sum += e;
 		}
 		return sum;
 	}
-	
-	public void blackJack() {
+	@Override
+	public void start() {
+		game += 1;
 		getMast(listBot);
 		getMast(listBot);
 		getMast(listPlayer);
 		getMast(listPlayer);
 		playGame();
 		
+	}
+	
+	private void returnCommand() {
+		int i = command.length;
+		String[] temp = new String[i + 2];
+		for (int j = 0; j < i; j++)
+			temp[j] = command[j];
+		temp[i] = "stop";
+		temp[i+1] = "more";
+		command = temp;
+		setCommand(command);
 	}
 	
 	private void playGame() {
@@ -59,17 +81,18 @@ public class BlackJack {
 		}
 	}
 	
-	public String getMessage() {
+	@Override
+	public String getMsg() {
 		String card = "";
-		for(String e : listPlayer.keySet())
-			card += e + ",  ";
+		for(Card e : listPlayer.keySet())
+			card += e.suit.toString() +  e.number.toString() + ",  ";
 		return "You card: " + card + "\n" + "result summ: " + sumPlayer.toString();
 	}
 	
 	public String addCard() {
 		getMast(listPlayer);
 		sumPlayer = getSum(listPlayer);
-		return getMessage();
+		return getMsg();
 	}
 	
 	public String stopCard() {
@@ -80,20 +103,28 @@ public class BlackJack {
 			if(sumPlayer > sumBot) {
 				if (sumPlayer > 21 && sumBot <= 21)
 					say += "... I win";
-				if (sumPlayer <= 21)
+				if (sumPlayer <= 21) {
 					say += "... You win";
+					result += 1;
+				}
 			}
 			if(sumPlayer == sumBot) {
-				if(listPlayer.size() > listBot.size())
+				if(listPlayer.size() > listBot.size()) {
 					say += "... You win";
-				if(listPlayer.size() == listBot.size())
+					result += 1;
+				}
+				if(listPlayer.size() == listBot.size()) {
 					say += "... equal";
+					result += 0.5;
+				}
 				if(listPlayer.size() < listBot.size() )
 					say += "... I win";
 			}
 			if(sumBot > sumPlayer) {
-				if (sumPlayer <= 21 && sumBot > 21)
+				if (sumPlayer <= 21 && sumBot > 21) {
 					say += "...  You win";
+					result += 1;
+				}
 				if (sumBot <= 21)
 					say += "... I win";
 			}
@@ -102,6 +133,9 @@ public class BlackJack {
 		listPlayer.clear();
 		sumPlayer = 0;
 		sumBot = 0;
+		getGame(game);
+		getResult(result);
 		return say;
 	}
+
 }
