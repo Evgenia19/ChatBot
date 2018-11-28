@@ -1,4 +1,4 @@
 package bot;
 public enum ChatBotState {
-	PlayGame, Community
+	Hang, BlackJack, Quiz, Community
 }
