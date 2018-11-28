@@ -4,47 +4,45 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class ChatBotControl {
+	private Game game;
 	private Pattern pattern;
-	private BlackJack black;
+	private BlackJack blackJack;
 	private Hang hang;
-	private int result = 0;
-	private int game = 0;
+	private Quiz quiz;
 
-	public String game21(String message) {
-		if (message.hashCode() == "start".hashCode())
-			return start21();
-		if (message.hashCode() == "more".hashCode())
-			return addCard();
-		if (message.hashCode() == "stop".hashCode())
-			return stop21();
-		if (message.hashCode() == "new game".hashCode())
-			return start21();
-		if (message.hashCode() == "end".hashCode())
-			return EndGame();
-		if (message.hashCode() == "help".hashCode())
-			return getHelp();
-		return "if you want communication then you should write: end";
+	public String game(String message, Map<ChatBotState, String[]> commands, ChatBotState state) {
+		if (message.length() == 1)
+			switch(state) {
+			case Hang:
+				return hang.playHang(message.charAt(0));
+			case Quiz:
+				return quiz.askQuestion(message);
+			default:
+				break;
+			}
+		String[] command = commands.get(state);
+		for(int i = 0; i < command.length; i++) {
+			if (command[i].equals(message)) {
+				switch(message) {
+				case "help":
+					hang = new Hang();
+					return hang.getHelp();
+				case "more":
+					return addCard();
+				case "stop":
+					return stop21();
+				case "start":
+					return start(state);
+				case "new game":
+					return start(state);
+				case "end game":
+					return hang.end();
+				}
+			}
+		}
+		return "if you want communication then you should write: end";	
 	}
 	
-	public String gameHang(String message) {
-		if(message.length() == 1)
-			return hang.playHang(message.charAt(0));
-		if (message.hashCode() == "start".hashCode())
-			return startHang();
-		if (message.hashCode() == "new game".hashCode())
-			return startHang();
-		if (message.hashCode() == "end".hashCode())
-			return EndGame();
-		if (message.hashCode() == "help".hashCode())
-			return getHelp();
-		return "if you want communication then you should write: end";
-	}
-
-	public String getHelp() {
-		return "My name Shaxter. I like community and play game."
-				+ " I can play 21, hang, quiz. If you want play with me then you should write game";
-	}
-
 	public String getMessage(String message) {
 		String msg = String.join(" ", message.toLowerCase().split("[ {,|.}?]+"));
 		for (Map.Entry<String, String> o : PATTERNS_FOR_ANALYSIS.entrySet()) {
@@ -55,7 +53,7 @@ public class ChatBotControl {
 		return "I don't understand you, you can write: help";
 	}
 
-	final static Map<String, String> PATTERNS_FOR_ANALYSIS = new HashMap<String, String>() {
+	final  Map<String, String> PATTERNS_FOR_ANALYSIS = new HashMap<String, String>() {
 		{
 			// hello
 			put("Hi", "hello");
@@ -65,9 +63,6 @@ public class ChatBotControl {
 			put("start", "start");
 			// bye
 			put("bye", "bye");
-			// games
-			put("hang", "hang");
-			put("21", "21");
 		}
 	};
 
@@ -77,47 +72,46 @@ public class ChatBotControl {
 			put("help", "My name Shaxter. I like community and play game. "
 					+ "I can play 21, hang, quiz. If you want play with me then you should write game");
 			put("bye", "Goodbey.");
-			put("21", game21());
-			put("hang", hang());
 		}
 	};
 
-	private String hang() {
-		return "Behavire:" + "\n" + "start" + "\n" + "new game" + "end - end game";
-	}
-	
-	private String game21() {
-		return "Behavire: " + "\n" + "start" + "\n" + "new game" + "\n" + "more - get card" + "\n"
-				+ "stop" + "\n" + "end - end game";
-	}
-
 	private String stop21() {
-		game += 1;
-		String sntns = black.stopCard();
-		String[] say = sntns.split(".");
+		String sntns = blackJack.stopCard();
 		return sntns;
 	}
 
-	private String EndGame() {
-		String say = "Result: " + result + " from " + game;
-		result = 0;
-		game = 0;
-		return say;
-	}
-
 	private String addCard() {
-		return black.addCard();
+		return blackJack.addCard();
+	}
+	
+	private String start(ChatBotState state) {
+		switch(state) {
+		case Hang:
+			return startHang();
+		case Quiz:
+			return startQuiz();
+		case BlackJack:
+			return start21();
+		default:
+			return null;
+		}
 	}
 
 	private String start21() {
-		black = new BlackJack();
-		black.blackJack();
-		return black.getMessage();
+		blackJack = new BlackJack();
+		blackJack.start();
+		return blackJack.getMsg();
 	}
 	
 	private String startHang() {
 		hang = new Hang();
-		hang.hang();
-		return hang.msgHang();
+		hang.start();
+		return hang.getMsg();
+	}
+	
+	private String startQuiz() {
+		quiz = new Quiz();
+		quiz.start();
+		return quiz.getMsg();
 	}
 }
