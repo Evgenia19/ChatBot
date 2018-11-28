@@ -1,6 +1,4 @@
 package bot;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ChatBot {
@@ -8,11 +6,11 @@ public class ChatBot {
 	private ChatBotState state;
 	private String userId;
 	private Map<ChatBotState, String[]> move;
-	private String[] commands;
 	private ChatBotControl chatBotControls;
 	private Moving moving;
 	private BlackJack blackJack;
 	private Game game;
+	private ChatBotState lastState;
 	
 	
 	ChatBot(String id) {
@@ -21,11 +19,20 @@ public class ChatBot {
 		chatBotControls = new ChatBotControl();
 		moving = new Moving();
 		move = moving.returnMove();
-		for(ChatBotState e : move.keySet())
-			System.out.println(move.get(e));
 	}
 
 	public UserMessage process(UserMessage msg) {
+		
+		if(state != ChatBotState.Community) {
+			if(msg.content.equals("end")) {
+				lastState = state;
+				state = ChatBotState.Community;
+				String text = chatBotControls.game(msg.content, move, lastState);
+				return new UserMessage(userId, text, move.get(lastState));
+			}
+			return new UserMessage(userId, play(msg.content), move.get(state));
+		}
+		
 		switch(msg.content) {
 		case "21":
 			state = ChatBotState.BlackJack;
@@ -36,14 +43,6 @@ public class ChatBot {
 		case "quiz":
 			state = ChatBotState.Quiz;
 			return new UserMessage(userId, getBehavior(game), move.get(state));
-		default:
-			break;
-		}
-		
-		if(state != ChatBotState.Community) {
-			if(msg.content.equals("end"))
-				state = ChatBotState.Community;
-			return new UserMessage(userId, play(msg.content), move.get(state));
 		}
 		return new UserMessage(userId, communication(msg.content), null);
 	}
