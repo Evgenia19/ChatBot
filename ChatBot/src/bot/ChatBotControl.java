@@ -4,18 +4,21 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class ChatBotControl {
-	private Game game;
 	private Pattern pattern;
 	private BlackJack blackJack;
 	private Hang hang;
 	private Quiz quiz;
+	private int game = 0;
+	private int result = 0;
 
 	public String game(String message, Map<ChatBotState, String[]> commands, ChatBotState state) {
 		if (message.length() == 1)
 			switch(state) {
 			case Hang:
+				result += hang.result;
 				return hang.playHang(message.charAt(0));
 			case Quiz:
+				result += quiz.score;
 				return quiz.askQuestion(message);
 			default:
 				break;
@@ -24,19 +27,20 @@ public class ChatBotControl {
 		for(int i = 0; i < command.length; i++) {
 			if (command[i].equals(message)) {
 				switch(message) {
+				case "end":
+					return end(state);
 				case "help":
 					hang = new Hang();
 					return hang.getHelp();
 				case "more":
 					return addCard();
 				case "stop":
+					result = blackJack.result;
 					return stop21();
 				case "start":
 					return start(state);
 				case "new game":
 					return start(state);
-				case "end game":
-					return hang.end();
 				}
 			}
 		}
@@ -56,11 +60,9 @@ public class ChatBotControl {
 	final  Map<String, String> PATTERNS_FOR_ANALYSIS = new HashMap<String, String>() {
 		{
 			// hello
-			put("Hi", "hello");
+			put("hi", "hello");
 			// who // name
 			put("help", "help");
-			// start
-			put("start", "start");
 			// bye
 			put("bye", "bye");
 		}
@@ -96,20 +98,29 @@ public class ChatBotControl {
 			return null;
 		}
 	}
+	
+	private String end(ChatBotState state) {
+		String say = "Result: " + result + " from " + game;
+		game = 0;
+		return say;
+	}
 
 	private String start21() {
+		game += 1;
 		blackJack = new BlackJack();
 		blackJack.start();
 		return blackJack.getMsg();
 	}
 	
 	private String startHang() {
+		game += 1;
 		hang = new Hang();
 		hang.start();
 		return hang.getMsg();
 	}
 	
 	private String startQuiz() {
+		game += 1;
 		quiz = new Quiz();
 		quiz.start();
 		return quiz.getMsg();
