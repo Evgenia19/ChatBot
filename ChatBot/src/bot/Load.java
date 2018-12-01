@@ -21,6 +21,7 @@ public class Load {
 			}
         } 
         catch (IOException e) {
+        	//TODO Нужно выбрать другой способ обработки исключений
         	System.out.println(e.getMessage());
         }
         return content;
@@ -29,6 +30,7 @@ public class Load {
 	private ArrayList<Question> loadQuestions(String content) {
 		ArrayList<Question> questions = new ArrayList<>();
 		if(content == null)
+			//TODO Не нужно выводить это тут, так как код наверху должен решать выводить что-то куда-то или нет. Сейчас у вас есть консоль, однако, в случаей с UI вам бы понадобилось писать туда
         	System.out.println("Файл пуст");
         else {
         	for(String q: content.split("\n\n\n")) {
@@ -54,6 +56,8 @@ public class Load {
     private ArrayList<String> loadWords(String content) {
     	ArrayList<String> words = new ArrayList<String>();
     	if(content == null)
+
+			//TODO Не нужно выводить это тут, так как код наверху должен решать выводить что-то куда-то или нет. Сейчас у вас есть консоль, однако, в случаей с UI вам бы понадобилось писать туда
         	System.out.println("Файл пуст");
         else {
         	for(String q: content.split("\n"))

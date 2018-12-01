@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+//TODO Попробуйте проговорить для себя за что именно отвечать ChatBotControl. Пока для себя я это сформулировать не смог :(
 public class ChatBotControl {
 	private Pattern pattern;
 	private BlackJack blackJack;
@@ -78,6 +79,7 @@ public class ChatBotControl {
 	};
 
 	private String stop21() {
+		//TODO Чего это за странное название переменной?!
 		String sntns = blackJack.stopCard();
 		return sntns;
 	}

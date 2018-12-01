@@ -3,6 +3,7 @@ package bot;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO Не очень понятно за что именно отвечает этот класс.
 public class Moving {
 	
 	private BlackJack blackJack = new BlackJack();

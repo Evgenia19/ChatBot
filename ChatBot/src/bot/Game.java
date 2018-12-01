@@ -1,5 +1,7 @@
 package bot;
 
+//TODO Нужно переименовать в GameBase или AbstractGame
+//TODO Пока вообще не очень понятно, зачем этот абстрактный класс нужен
 public abstract class Game implements InterfaceGame{
 
 	private String[] command = new String[] {"start", "new game", "end", "help"};

@@ -1,6 +1,7 @@
 package bot;
 import java.util.Map;
 
+//TODO Попробуйте проговорить для себя за что именно отвечать ChatBot. Пока для себя я это сформулировать не смог :(
 public class ChatBot {
 
 	private ChatBotState state;
@@ -8,6 +9,7 @@ public class ChatBot {
 	private Map<ChatBotState, String[]> move;
 	private ChatBotControl chatBotControls;
 	private Moving moving;
+	//TODO Неиспользуемые переменные
 	private BlackJack blackJack;
 	private Game game;
 	private ChatBotState lastState;

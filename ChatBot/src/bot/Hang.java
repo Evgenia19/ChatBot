@@ -3,14 +3,18 @@ package bot;
 import java.util.ArrayList;
 import java.util.Random;
 
+//TODO Наверное, на логику игры должны быть какие-то тесты?!
 public class Hang extends Game{
 
 	private Random random = new Random();
 	private Load loadQuestion;
 	private ArrayList<String> words;
 	private String word;
+	//TODO Почему тут Character, а не char?
 	private Character[] answer;
+	//TODO Почему тут Boolean, а не boolean?
 	private Boolean correct = false;
+	//TODO Почему тут Boolean, а не boolean?
 	private Boolean correctSymbol = false;
 	private int lives = 9;
 	private int symbol;
