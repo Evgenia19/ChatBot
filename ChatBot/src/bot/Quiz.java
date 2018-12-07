@@ -3,45 +3,59 @@ package bot;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Quiz extends Game{
-	
-	private Random random = new Random();
-	private ArrayList<Question> questions;
-	private Question current;
-	public int score = 0;
-	private int questionsLeft;
-	private Load loadQuestion;
-	public int numberQuestions;
+public class Quiz extends AbstractGame{
 
-	@Override
-	public void start() {
-		loadQuestion = new Load();
-		questions = loadQuestion.returnQuestions();
-		questionsLeft = questions.size();
-		numberQuestions = questions.size();
-		chooseQuestion();
-	}
-	
-	public String getMsg() {
-		return current.question;
-	}
+    private Random random = new Random();
+    private ArrayList<Question> questions;
+    private Question current;
+    public int score = 0;
+    private int questionsLeft;
+    private Load loadQuestion;
+    public int numberQuestions = 0;
+    private ArrayList<String> command;
 
-	private void chooseQuestion() {
+    Quiz() {
+        command = getCommands();
+        returnCommandsOfGame();
+    }
+
+    @Override
+    public void start() {
+        loadQuestion = new Load();
+        questions = loadQuestion.returnQuestions();
+        questionsLeft = questions.size();
+        System.out.println(questionsLeft);
+        chooseQuestion();
+    }
+
+    private void returnCommandsOfGame() {
+        command.add(1, "A");
+        command.add(2, "B");
+        command.add(3, "C");
+        setCommands(command);
+    }
+
+    public String messageForPlayer() {
+        return current.question;
+    }
+
+    private void chooseQuestion() {
         int index = random.nextInt(questions.size());
         current = questions.get(index);
         questions.remove(index);
     }
-	
-	private boolean isCorrect(String answer) { 
-		return answer.equals(current.rightAnswer); 
-	}
-	
-	public String askQuestion(String content){
+
+    private boolean isCorrect(String answer) {
+        return answer.equals(current.rightAnswer);
+    }
+
+    public String askQuestion(String content){
+        numberQuestions += 1;
         if (isCorrect(content)) {
             score++;
             questionsLeft--;
             if (questionsLeft == 0)
-                return "Верно! Ура, викторина наконец-то закончилась!";           
+                return "Верно! Ура, викторина наконец-то закончилась!";
             chooseQuestion();
             return "Верно! Следующий вопрос: \n" +  current.question;
         }
