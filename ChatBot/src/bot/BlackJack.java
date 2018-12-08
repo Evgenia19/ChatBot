@@ -22,13 +22,14 @@ public class BlackJack extends AbstractGame{
         returnCommandsOfGame();
     }
 
-    private void cardFotPlay(Map<Card, Integer> dictPlay) {
+	//TODO Неудачное название метода. В методе где-то должен быть глагол
+	//TODO Неудачное название параметра(может быть все-таки его hand стоит назвать? :))
+	private void cardFotPlay(Map<Card, Integer> dictPlay) {
         Card card = Card.pickRandom();
         int rankCardForSum = card.rank.ordinal();
 
-        //TODO Опять же не очень понятно, что тут происходит :(
-        //TODO Получаем число карты для последующей суммы
         if(!botCard.containsKey(card) & !playerCard.containsKey(card)) {
+        	//TODO Магические числа в коде. Их стараются делать именованными константами(с понятным именем!), чтобы не гадать, что они значать
             if(rankCardForSum > 5)
                 rankCardForSum = rankCardForSum - 4;
             else
@@ -49,8 +50,6 @@ public class BlackJack extends AbstractGame{
     
     @Override
     public void start() {
-        //TODO Выглядит как баг - почему по два раза методы вызываются с одними аргументами?!
-        //Todo Надо две карты для начала игры
         cardFotPlay(botCard);
         cardFotPlay(botCard);
         cardFotPlay(playerCard);
@@ -59,8 +58,6 @@ public class BlackJack extends AbstractGame{
 
     }
 
-    //TODO из названия(да и в целом) не очень понятно, что этот метод вообще делает
-    //TODO рассширяет стандартны словарь игры 
     private void returnCommandsOfGame() {
         command.add(1, "more");
         command.add(2, "stop");
@@ -70,13 +67,15 @@ public class BlackJack extends AbstractGame{
     private void playGame() {
         sumPlayer = getSumCardOnHand(playerCard);
         sumBot = getSumCardOnHand(botCard);
-        while(sumBot <= 17) {
+		//TODO Магические числа в коде. Их стараются делать именованными константами(с понятным именем!), чтобы не гадать, что они значать
+		while(sumBot <= 17) {
             cardFotPlay(botCard);
             sumBot = getSumCardOnHand(botCard);
         }
     }
 
-    public String messageForPlayer() {
+    //TODO Неудачное название метода. В методе где-то должен быть глагол.
+	public String messageForPlayer() {
         StringBuilder card =  new StringBuilder();
         for(Card e : playerCard.keySet())
             card.append(e.strCard() + " ");
@@ -89,18 +88,22 @@ public class BlackJack extends AbstractGame{
         return messageForPlayer();
     }
 
+	//TODO Неудачное название метода. В методе где-то должен быть глагол: end в текущем контексте является существительным.
     public String endOfGame() {
         getResult(sumBot, "Shaxter");
         getResult(sumPlayer, "You");
         String answer = String.format("Победители, набравшие 21: %s\n" +
                 "Набравшие меньше 21: %s\nПеребравшие: %s", say21, less21, more21);
-        if(sumPlayer >= sumBot & sumPlayer <= 21)
+		//TODO Магические числа в коде. Их стараются делать именованными константами(с понятным именем!), чтобы не гадать, что они значать
+		if(sumPlayer >= sumBot & sumPlayer <= 21)
             result += 1;
         return answer;
     }
 
-    public void getResult(int summ, String user) {
-        if(summ > 21) {
+    //TODO Неудачное название метода. Когда метод начинается get, то обычно это означает, что он что-то возвращает.
+    public void getResult(int summ/*TODO почему summ, а не sum?*/, String user) {
+		//TODO Магические числа в коде. Их стараются делать именованными константами(с понятным именем!), чтобы не гадать, что они значать
+		if(summ > 21) {
             more21 += user + "-" + summ + " ";
         }
         if (summ < 21) {

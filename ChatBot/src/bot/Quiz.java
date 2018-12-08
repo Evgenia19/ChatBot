@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Quiz extends AbstractGame{
 
+    //TODO Вы теперь можете воспользоваться RandomHelpers и не писать это
     private Random random = new Random();
     private ArrayList<Question> questions;
     private Question current;
@@ -24,6 +25,7 @@ public class Quiz extends AbstractGame{
         loadQuestion = new Load();
         questions = loadQuestion.returnQuestions();
         questionsLeft = questions.size();
+        //TODO Это чего еще за печатание на экран?! Все взаимодействие с пользователем должны быть вынесено из логики
         System.out.println(questionsLeft);
         chooseQuestion();
     }

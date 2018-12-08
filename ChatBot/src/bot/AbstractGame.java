@@ -2,11 +2,10 @@ package bot;
 
 import java.util.ArrayList;
 
-//TODO Пока вообще не очень понятно, зачем этот абстрактный класс нужен
-//TODO Вы просили, я попыталась найти общее в играх...
 public abstract class AbstractGame implements Game{
 
     private ArrayList<String> command = new ArrayList<String>();
+    //TODO Неиспользуемая переменная
     private Statistic statistic = new Statistic();
 
 
@@ -33,6 +32,7 @@ public abstract class AbstractGame implements Game{
     private String behavior() {
         String say = "Behavior: ";
         for(String e: command) {
+            //TODO Как же StringBuilder?
             say += e + "\n";
         }
         return say;

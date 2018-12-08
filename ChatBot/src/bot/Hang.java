@@ -24,6 +24,7 @@ public class Hang extends AbstractGame{
         returnCommandsOfGame();
     }
 
+    //TODO Неудачное название метода. Когда метод начинается get, то обычно это означает, что он что-то возвращает.
     private void getSymbol(Character smb) {
         correctSymbol = false;
         for (int i = 0; i < word.length(); i++) {
@@ -42,6 +43,7 @@ public class Hang extends AbstractGame{
         }
     }
 
+    //TODO Неудачное название метода. Когда метод начинается get, то обычно это означает, что он что-то возвращает.
     private void getWord() {
         int numb = random.nextInt(words.size());
         word = words.get(numb);
@@ -61,6 +63,7 @@ public class Hang extends AbstractGame{
         return text;
     }
 
+    //TODO Неудачное название метода. В методе где-то должен быть глагол.
     public String msgHang() {
         if (correctSymbol)
             return "You right" + "\n";
@@ -94,6 +97,7 @@ public class Hang extends AbstractGame{
         setCommands(command);
     }
 
+    //TODO Неудачное название метода.
     public String messageForPlayer() {
         return "lives:" + lives + "\n" + getText();
     }

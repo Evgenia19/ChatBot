@@ -61,29 +61,36 @@ public class ChatBot {
         return new UserMessage(userId, communication(msg.content), move.get(state));
     }
 
+    //TODO Неудачное название метода. В методе где-то должен быть глагол.
     private String play(String msg) {
         return game(msg);
     }
 
+    //TODO Неудачное название метода. В методе где-то должен быть глагол.
     private String communication(String msg) {
         return getMessage(msg);
     }
 
+    //TODO Неудачное название метода. В методе где-то должен быть глагол.
     private String behavior21() {
         game = new BlackJack();
         return game.getBehavior();
     }
 
+    //TODO почему с большой буквы?
     private String BehaviorHang() {
         game = new Hang();
         return game.getBehavior();
     }
 
+    //TODO почему с большой буквы?
+    //TODO Неудачное
     private String BehaviorQuiz() {
         game = new Quiz();
         return game.getBehavior();
     }
 
+    //TODO Неудачное название метода. В методе где-то должен быть глагол.
     public String game(String message) {
 
         ArrayList<String> command = move.get(state);

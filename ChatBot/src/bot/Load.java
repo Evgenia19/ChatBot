@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-
+//TODO Не очень удачное название
 public class Load {
     private	String fileQuestion = "questions.txt";
     private	String fileWord = "words.txt";
@@ -17,12 +17,12 @@ public class Load {
                 new FileInputStream(fileName), Charset.forName("UTF-8")))) {
             String line = "";
             while ((line = reader.readLine()) != null) {
+                //TODO А как же использование StringBuilder?
                 content += line + "\n";
             }
         }
         catch (IOException e) {
             //TODO Нужно выбрать другой способ обработки исключений
-            //TODO такой?
             e.printStackTrace();
         }
         return content;
@@ -31,7 +31,7 @@ public class Load {
     private ArrayList<Question> loadQuestions(String content) {
         ArrayList<Question> questions = new ArrayList<>();
         if(content == null) {
-
+            //TODO И чего это за if такой?!
         }
         else {
             for(String q: content.split("\n\n\n")) {
@@ -57,7 +57,7 @@ public class Load {
     private ArrayList<String> loadWords(String content) {
         ArrayList<String> words = new ArrayList<String>();
         if(content == null) {
-
+            //TODO И чего это за if такой?!
         }
         else {
             for(String q: content.split("\n"))
