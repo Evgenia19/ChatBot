@@ -13,12 +13,7 @@ public abstract class AbstractGame implements Game{
         return "let's speak";
     }
 
-
     public ArrayList<String> getCommands() {
-        command.add("start");
-        command.add("end");
-        command.add("statistic");
-        command.add("help");
         return command;
     }
 
@@ -27,12 +22,12 @@ public abstract class AbstractGame implements Game{
     }
 
     private String behavior() {
-        String say = "Behavior: ";
+        StringBuilder say = new StringBuilder();
+        say.append("Behavior: ");
         for(String e: command) {
-            //TODO Как же StringBuilder?
-            say += e + "\n";
+            say.append(e + "\n");
         }
-        return say;
+        return say.toString();
     }
 
     public String getBehavior() {
