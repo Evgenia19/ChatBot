@@ -82,7 +82,7 @@ public class BlackJack extends AbstractGame{
 	public String getMessageOfGameForPlayer() {
         StringBuilder card =  new StringBuilder();
         for(Card e : playerCard.keySet())
-            card.append(e.strCard() + " ");
+            card.append(e.toString() + " ");
         return "You card: " + card + "\n" + "result summ: " + sumPlayer.toString();
     }
 
