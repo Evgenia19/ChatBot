@@ -174,7 +174,7 @@ public class ChatBot {
     };
 
     private String stop21() {
-        return blackJack.endOfGame();
+        return blackJack.getResultOfGame();
     }
 
     private String addCard() {
@@ -198,20 +198,20 @@ public class ChatBot {
         games += 1;
         blackJack = new BlackJack();
         blackJack.start();
-        return blackJack.messageForPlayer();
+        return blackJack.getMessageOfGameForPlayer();
     }
 
     private String startHang() {
         games += 1;
         hang = new Hang();
         hang.start();
-        return hang.messageForPlayer();
+        return hang.getMessageOfGameForPlayer();
     }
 
     private String startQuiz() {
         quiz = new Quiz();
         quiz.start();
-        return quiz.messageForPlayer();
+        return quiz.getMessageOfGameForPlayer();
     }
 
     private void getStatistic() {
