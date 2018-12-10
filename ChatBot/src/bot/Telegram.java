@@ -28,7 +28,7 @@ public class Telegram extends TelegramLongPollingBot{
         if(multiUser.addUser(id)) {
             String c = "";
         }
-        UserMessage message = multiUser.users(new UserMessage(id, msg));
+        UserMessage message = multiUser.getCommunicationWithUsers(new UserMessage(id, msg));
         SendMessage sendMsg = new SendMessage();
         sendMsg.setChatId(id);
         sendMsg.setText(message.content);
