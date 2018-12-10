@@ -19,7 +19,7 @@ public class Main {
 						} else
 							System.out.println("\n" + "Shaaxter: There is this id, choose different");
 					} else {
-						UserMessage message = multiUser.users(new UserMessage(id, msg, null));
+						UserMessage message = multiUser.getCommunicationWithUsers(new UserMessage(id, msg, null));
 						System.out.println("\n" + "Shaaxter: " + message.content + "\n\n" + id + ": ");
 					}
 				}
