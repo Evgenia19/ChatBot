@@ -13,17 +13,20 @@ import java.util.Scanner;
 public class Weather {
 
     public static String getWeather(String message, Model model) throws IOException {
-        URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + message + "&units=metric&appid=6fff53a641b9b9a799cfd6b079f5cd4e");
-
-        //TODO А кто поток будет закрывать?
-        Scanner in = new Scanner((InputStream) url.getContent());
-        String result = "";
-        while (in.hasNext()) {
-            //TODO А как же StringBuilder?
-            result += in.nextLine();
+        try(Scanner in = new Scanner((InputStream) new URL("http://api.openweathermap.org/data/2.5/weather?q="
+                + message
+                + "&units=metric&appid=6fff53a641b9b9a799cfd6b079f5cd4e").getContent())) {
+            result = new StringBuilder();
+            while (in.hasNext()) {
+                result.append(in.nextLine());
+            }
+        }
+        catch (IOException e) {
+            return "Город не найден!";
         }
 
-        JSONObject town = new JSONObject(result);
+        String weather = result.toString();
+        JSONObject town = new JSONObject(weather);
         model.setName(town.getString("name"));
 
         JSONObject main = town.getJSONObject("main");
