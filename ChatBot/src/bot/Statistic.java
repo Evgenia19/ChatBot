@@ -14,17 +14,17 @@ public class Statistic {
     }
 
     public void getStatistic21(int game, int result) {
-        game21 = game;
-        score21 = result;
+        game21 += game;
+        score21 += result;
     }
 
     public void getStatisticHang(int game, int result) {
-        gameHang = game;
-        scoreHang = result;
+        gameHang += game;
+        scoreHang += result;
     }
 
     public void getStatisticQuiz(int game, int result) {
-        gameQuiz = game;
-        scoreQuiz = result;
+        gameQuiz += game;
+        scoreQuiz += result;
     }
 }
