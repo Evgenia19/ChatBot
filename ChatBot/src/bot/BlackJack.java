@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-//TODO Наверное, на логику игры должны быть какие-то тесты?!
+
 public class BlackJack extends AbstractGame{
 
     private Map<Card, Integer> playerCard = new HashMap<Card, Integer>();
@@ -13,31 +13,33 @@ public class BlackJack extends AbstractGame{
     private Integer sumBot = 0;
     public int result = 0;
     private ArrayList<String> command;
-    String say21 = "";
-    String more21 = "";
-    String less21 = "";
+    private String say21 = "";
+    private String more21 = "";
+    private String less21 = "";
+    private int numberBeforeSmallCount = 5;
+    private int differentNumberBetweenCardAndPositionOfArrayForBigCard = 4;
+    private int getDifferentNumberBetweenCardAndPositionOfArrayForSmallCard = 6;
+    private int sufficientAmount = 17;
+    private int winNumber = 21;
 
     BlackJack() {
         command = getCommands();
         returnCommandsOfGame();
     }
-
-	//TODO Неудачное название метода. В методе где-то должен быть глагол
-	//TODO Неудачное название параметра(может быть все-таки его hand стоит назвать? :))
-	private void cardFotPlay(Map<Card, Integer> dictPlay) {
+    
+	private void getCardForPlay(Map<Card, Integer> dictPlay) {
         Card card = Card.pickRandom();
-        int rankCardForSum = card.rank.ordinal();
+        int handSum = card.rank.ordinal();
 
         if(!botCard.containsKey(card) & !playerCard.containsKey(card)) {
-        	//TODO Магические числа в коде. Их стараются делать именованными константами(с понятным именем!), чтобы не гадать, что они значать
-            if(rankCardForSum > 5)
-                rankCardForSum = rankCardForSum - 4;
+        	if(handSum > numberBeforeSmallCount)
+                handSum = handSum - differentNumberBetweenCardAndPositionOfArrayForBigCard;
             else
-                rankCardForSum = rankCardForSum + 6;
-            dictPlay.put(card,rankCardForSum);
+                handSum = handSum + getDifferentNumberBetweenCardAndPositionOfArrayForSmallCard;
+            dictPlay.put(card,handSum);
         }
         else
-            cardFotPlay(dictPlay);
+            getCardForPlay(dictPlay);
     }
 
     private int getSumCardOnHand(Map<Card, Integer> dictPlay) {
@@ -50,32 +52,34 @@ public class BlackJack extends AbstractGame{
     
     @Override
     public void start() {
-        cardFotPlay(botCard);
-        cardFotPlay(botCard);
-        cardFotPlay(playerCard);
-        cardFotPlay(playerCard);
+        getCardForPlay(botCard);
+        getCardForPlay(botCard);
+        getCardForPlay(playerCard);
+        getCardForPlay(playerCard);
         playGame();
 
     }
 
     private void returnCommandsOfGame() {
-        command.add(1, "more");
-        command.add(2, "stop");
+        command.add("start");
+        command.add("more");
+        command.add("stop");
+        command.add("end");
+        command.add("statistic");
+        command.add("help");
         setCommands(command);
     }
 
     private void playGame() {
         sumPlayer = getSumCardOnHand(playerCard);
         sumBot = getSumCardOnHand(botCard);
-		//TODO Магические числа в коде. Их стараются делать именованными константами(с понятным именем!), чтобы не гадать, что они значать
-		while(sumBot <= 17) {
-            cardFotPlay(botCard);
+		while(sumBot <= sufficientAmount) {
+            getCardForPlay(botCard);
             sumBot = getSumCardOnHand(botCard);
         }
     }
 
-    //TODO Неудачное название метода. В методе где-то должен быть глагол.
-	public String messageForPlayer() {
+	public String getMessageOfGameForPlayer() {
         StringBuilder card =  new StringBuilder();
         for(Card e : playerCard.keySet())
             card.append(e.strCard() + " ");
@@ -83,26 +87,24 @@ public class BlackJack extends AbstractGame{
     }
 
     public String addCard() {
-        cardFotPlay(playerCard);
+        getCardForPlay(playerCard);
         sumPlayer = getSumCardOnHand(playerCard);
-        return messageForPlayer();
+        if(sumPlayer > 21)
+            return getResultOfGame();
+        return getMessageOfGameForPlayer();
     }
 
-	//TODO Неудачное название метода. В методе где-то должен быть глагол: end в текущем контексте является существительным.
-    public String endOfGame() {
-        getResult(sumBot, "Shaxter");
-        getResult(sumPlayer, "You");
+    public String getResultOfGame() {
+        stringResult(sumBot, "Shaxter");
+        stringResult(sumPlayer, "You");
         String answer = String.format("Победители, набравшие 21: %s\n" +
                 "Набравшие меньше 21: %s\nПеребравшие: %s", say21, less21, more21);
-		//TODO Магические числа в коде. Их стараются делать именованными константами(с понятным именем!), чтобы не гадать, что они значать
-		if(sumPlayer >= sumBot & sumPlayer <= 21)
+		if(sumPlayer >= sumBot & sumPlayer <= winNumber)
             result += 1;
         return answer;
     }
 
-    //TODO Неудачное название метода. Когда метод начинается get, то обычно это означает, что он что-то возвращает.
-    public void getResult(int summ/*TODO почему summ, а не sum?*/, String user) {
-		//TODO Магические числа в коде. Их стараются делать именованными константами(с понятным именем!), чтобы не гадать, что они значать
+    public void stringResult(int summ/*TODO почему summ, а не sum?*/, String user) {
 		if(summ > 21) {
             more21 += user + "-" + summ + " ";
         }
@@ -111,5 +113,23 @@ public class BlackJack extends AbstractGame{
         }
         if(summ == 21)
             say21 += user + "-" + summ + " ";
+    }
+
+    public Map<Card, Integer> getDictPlay() {
+        return playerCard;
+    }
+    public int getSumPlayer(Map<Card, Integer> hand) {
+        return getSumCardOnHand(hand);
+    }
+    public void setHandPlayer(Map<Card, Integer> hand) {
+        playerCard = hand;
+    }
+
+    public void setSumPlayer(int sum) {
+        sumPlayer = sum;
+    }
+
+    public void setSumBot(int sum) {
+        sumBot = sum;
     }
 }
