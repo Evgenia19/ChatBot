@@ -17,3 +17,4 @@ public class UserMessage {
     public UserMessage(String userId, String content) {
         this(userId, content, null);
     }
+}
