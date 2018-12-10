@@ -1,6 +1,4 @@
 package bot;
-import java.util.ArrayList;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,8 +9,6 @@ public class BotTest {
     private BlackJack bj = new BlackJack();
     private Quiz quiz = new Quiz();
     private Hang hang = new Hang();
-    private ActionBot move = new ActionBot();
-    private Map<ChatBotState, ArrayList<String>> commands = move.returnMove();
     private String[] games = new String[] {"quiz", "hang", "21"};
 
     @Test
@@ -33,7 +29,7 @@ public class BotTest {
         UserMessage msg = bot_1.process(new UserMessage(userId_1, "help", null));
         Assert.assertEquals(
                 "My name Shaxter. I like community and play game."
-                        + " I can play 21, hang, quiz. If you want play with me then you should write game",
+                        + " I can play 21, hang, quiz. If you want play with me then you should write called game",
                 msg.content);
     }
 
@@ -65,13 +61,13 @@ public class BotTest {
         Assert.assertEquals(hang.getBehavior(), msg.content);
     }
 
-    @Test
-    public void testStartGame21() {
-        ChatBot bot_1 = new ChatBot(userId_1);
-        bot_1.process(new UserMessage(userId_1, "21", null));
-        UserMessage msg = bot_1.process(new UserMessage(userId_1, "start", null));
-        Assert.assertEquals(bj.messageForPlayer(), msg.content);
-    }
+    //@Test
+    //public void testStartGame21() {
+    //  ChatBot bot_1 = new ChatBot(userId_1);
+    //bot_1.process(new UserMessage(userId_1, "21", null));
+    //UserMessage msg = bot_1.process(new UserMessage(userId_1, "start", null));
+    //Assert.assertEquals(bj.getMessageOfGameForPlayer(), msg.content);
+    //}
 
     @Test
     public void testOnNotUderstandInGame() {
@@ -79,16 +75,9 @@ public class BotTest {
             ChatBot bot_1 = new ChatBot(userId_1);
             bot_1.process(new UserMessage(userId_1, e, null));
             UserMessage msg = bot_1.process(new UserMessage(userId_1, "asas", null));
-            Assert.assertEquals("if you want communication then you should write: end", msg.content);
+            Assert.assertEquals("if you want communication then you should write: end," +
+                    " but if you want play, you should write - start", msg.content);
         }
-    }
-
-    @Test
-    public void testNewGame21() {
-        ChatBot bot_1 = new ChatBot(userId_1);
-        bot_1.process(new UserMessage(userId_1, "21", null));
-        UserMessage msg = bot_1.process(new UserMessage(userId_1, "new game", null));
-        Assert.assertEquals(bj.messageForPlayer(), msg.content);
     }
 
     @Test
@@ -110,34 +99,7 @@ public class BotTest {
         bot_2.process(new UserMessage(userId_1, "more", null));
         bot_2.process(new UserMessage(userId_1, "stop", null));
         UserMessage msg = bot_2.process(new UserMessage(userId_1, "end", null));
-        Assert.assertEquals("Result: 0 from 1", msg.content);
-    }
-
-    @Test
-    public void testAddCard() {
-        ChatBot bot_1 = new ChatBot(userId_1);
-        bot_1.process(new UserMessage(userId_1, "21", null));
-        bot_1.process(new UserMessage(userId_1, "start", null));
-        UserMessage msg = bot_1.process(new UserMessage(userId_1, "more", null));
-        Assert.assertEquals(bj.messageForPlayer(), msg.content);
-    }
-
-    @Test
-    public void testPlayGameHang() {
-        ChatBot bot_1 = new ChatBot(userId_1);
-        bot_1.process(new UserMessage(userId_1, "hang", null));
-        bot_1.process(new UserMessage(userId_1, "start", null));
-        UserMessage msg = bot_1.process(new UserMessage(userId_1, "о", null));
-        Assert.assertEquals(hang.messageForPlayer(), msg.content);
-    }
-
-    @Test
-    public void testPlayGameQuiz() {
-        ChatBot bot_1 = new ChatBot(userId_1);
-        bot_1.process(new UserMessage(userId_1, "quiz", null));
-        bot_1.process(new UserMessage(userId_1, "start", null));
-        UserMessage msg = bot_1.process(new UserMessage(userId_1, "1", null));
-        Assert.assertEquals(quiz.messageForPlayer(), msg.content);
+        Assert.assertEquals("let's speak", msg.content);
     }
 
     @Test
@@ -146,16 +108,16 @@ public class BotTest {
             ChatBot bot_1 = new ChatBot(userId_1);
             bot_1.process(new UserMessage(userId_1, e, null));
             UserMessage msg = bot_1.process(new UserMessage(userId_1, "end", null));
-            Assert.assertEquals("Result: 0 from 0", msg.content);
+            Assert.assertEquals("let's speak", msg.content);
         }
     }
 
     @Test
-    public void testEndGameAndCommunit() {
+    public void testEndGameAndCommunity() {
         ChatBot bot_1 = new ChatBot(userId_1);
         bot_1.process(new UserMessage(userId_1, "21", null));
         bot_1.process(new UserMessage(userId_1, "end", null));
-        UserMessage msg = bot_1.process(new UserMessage(userId_1, "sdsd", null));
+        UserMessage msg = bot_1.process(new UserMessage(userId_1, "вава", null));
         Assert.assertEquals("I don't understand you, you can write: help", msg.content);
     }
 
@@ -169,4 +131,59 @@ public class BotTest {
         Assert.assertEquals(bj.getHelp(), msg_1.content);
         Assert.assertEquals(bj.getBehavior(), msg_2.content);
     }
+
+    @Test
+    public void testWeather() {
+        ChatBot bot_1 = new ChatBot(userId_1);
+        UserMessage msg = bot_1.process(new UserMessage(userId_1, "weather", null));
+        Assert.assertEquals("Введите город...", msg.content);
+    }
+
+    @Test
+    public void testWeatherNotFound() {
+        ChatBot bot_1 = new ChatBot(userId_1);
+        bot_1.process(new UserMessage(userId_1, "weather", null));
+        UserMessage msg = bot_1.process(new UserMessage(userId_1, "asasasas", null));
+        Assert.assertEquals("Город не найден!", msg.content);
+    }
+
+    @Test
+    public void testWeatherOut() {
+        ChatBot bot_1 = new ChatBot(userId_1);
+        bot_1.process(new UserMessage(userId_1, "weather", null));
+        bot_1.process(new UserMessage(userId_1, "help", null));
+        UserMessage msg = bot_1.process(new UserMessage(userId_1, "help", null));
+        Assert.assertEquals("My name Shaxter. I like community and play game. I can play 21, " +
+                "hang, quiz. If you want play with me then you should write called game", msg.content);
+    }
+
+    @Test
+    public void testStatistic() {
+        ChatBot bot_1 = new ChatBot(userId_1);
+        UserMessage msg = bot_1.process(new UserMessage(userId_1, "statistic", null));
+        Assert.assertEquals("Statistic: \nBlackJack: 0 from 0 \nQuiz: 0 from 0 \nHang: 0 from 0", msg.content);
+    }
+
+
+    @Test
+    public void testStatistic21() {
+        ChatBot bot_1 = new ChatBot(userId_1);
+        bot_1.process(new UserMessage(userId_1, "21", null));
+        bot_1.process(new UserMessage(userId_1, "start", null));
+        UserMessage msg = bot_1.process(new UserMessage(userId_1, "statistic", null));
+        Assert.assertEquals("Statistic: \nBlackJack: 0 from 1 \nQuiz: 0 from 0 \nHang: 0 from 0", msg.content);
+    }
+
+    @Test
+    public void testResultStatistic21() {
+        ChatBot bot_1 = new ChatBot(userId_1);
+        bot_1.process(new UserMessage(userId_1, "21", null));
+        bot_1.process(new UserMessage(userId_1, "start", null));
+        bj.setSumBot(19);
+        bj.setSumPlayer(21);
+        bot_1.process(new UserMessage(userId_1, "stop", null));
+        UserMessage msg = bot_1.process(new UserMessage(userId_1, "statistic", null));
+        Assert.assertEquals("Statistic: \nBlackJack: 1 from 1 \nQuiz: 0 from 0 \nHang: 0 from 0", msg.content);
+    }
+
 }
