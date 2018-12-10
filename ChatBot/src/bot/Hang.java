@@ -3,7 +3,6 @@ package bot;
 import java.util.ArrayList;
 import java.util.Random;
 
-//TODO Наверное, на логику игры должны быть какие-то тесты?!
 public class Hang extends AbstractGame{
 
     private Random random = new Random();
@@ -22,16 +21,16 @@ public class Hang extends AbstractGame{
     Hang() {
         command = getCommands();
         returnCommandsOfGame();
+        loadQuestion = new LoadFile();
+        words = loadQuestion.returnWord();
     }
 
-    //TODO Неудачное название метода. Когда метод начинается get, то обычно это означает, что он что-то возвращает.
-    private void getSymbol(Character smb) {
+    private void handlingSymbol(Character smb) {
         correctSymbol = false;
         for (int i = 0; i < word.length(); i++) {
             if (smb == word.charAt(i)) {
                 answer[i] = smb;
                 symbol = symbol - 1;
-                System.out.println(symbol);
                 correctSymbol = true;
             }
         }
@@ -43,8 +42,7 @@ public class Hang extends AbstractGame{
         }
     }
 
-    //TODO Неудачное название метода. Когда метод начинается get, то обычно это означает, что он что-то возвращает.
-    private void getWord() {
+    private void handlingWord(ArrayList<String> words) {
         int numb = random.nextInt(words.size());
         word = words.get(numb);
         words.remove(numb);
@@ -63,8 +61,7 @@ public class Hang extends AbstractGame{
         return text;
     }
 
-    //TODO Неудачное название метода. В методе где-то должен быть глагол.
-    public String msgHang() {
+    public String getMsgResultHang() {
         if (correctSymbol)
             return "You right" + "\n";
         else
@@ -72,14 +69,14 @@ public class Hang extends AbstractGame{
     }
 
     public String playHang(Character smb) {
-        getSymbol(smb);
+        Symbol(smb);
         if(!correct) {
             if(symbol == 0) {
                 result += 1;
                 return "You win" + "\n" + getText();
             }
             else
-                return "lives:" + lives + "\n" + msgHang() + getText();
+                return "lives:" + lives + "\n" + getMsgResultHang() + getText();
         }
         else
             return "You wrong" + "\n" + word;
@@ -88,17 +85,18 @@ public class Hang extends AbstractGame{
     @Override
     public void start() {
         game += 1;
-        loadQuestion = new Load();
-        words = loadQuestion.returnWord();
-        getWord();
+        handlingWord(words);
     }
 
     private void returnCommandsOfGame() {
+        command.add("start");
+        command.add("end");
+        command.add("statistic");
+        command.add("help");
         setCommands(command);
     }
 
-    //TODO Неудачное название метода.
-    public String messageForPlayer() {
+    public String getMessageOfGameForPlayer() {
         return "lives:" + lives + "\n" + getText();
     }
 }
