@@ -14,8 +14,7 @@ public class Card {
         return new Card(Suit.pickRandom(), Rank.pickRandom());
     }
 
-    //TODO Чего это за название метода такое?! Почему не toString?
-    public String strCard() {
+    public String toString() {
         return suit.toString() + " " + rank.toString();
     }
 }
