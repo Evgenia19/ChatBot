@@ -10,8 +10,7 @@ public class MultiUserBot {
 		bots = new HashMap<String, ChatBot>();
 	}
 
-	//TODO Неудачное название метода. В методе где-то должен быть глагол.
-	public UserMessage users(UserMessage user) {
+	public UserMessage getCommunicationWithUsers(UserMessage user) {
 		ChatBot handler = bots.get(user.userId);
 		return handler.process(user);
 	}
