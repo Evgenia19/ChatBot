@@ -5,9 +5,6 @@ import java.util.ArrayList;
 public abstract class AbstractGame implements Game{
 
     private ArrayList<String> command = new ArrayList<String>();
-    //TODO Неиспользуемая переменная
-    private Statistic statistic = new Statistic();
-
 
     abstract public void start();
     abstract public String messageForPlayer();
