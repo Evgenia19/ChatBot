@@ -7,36 +7,31 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 //TODO Не очень удачное название
-public class Load {
+public class LoadFile {
     private	String fileQuestion = "questions.txt";
     private	String fileWord = "words.txt";
 
     private String load(String fileName) {
-        String content = null;
+        StringBuilder content = new StringBuilder();
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(
                 new FileInputStream(fileName), Charset.forName("UTF-8")))) {
             String line = "";
             while ((line = reader.readLine()) != null) {
-                //TODO А как же использование StringBuilder?
-                content += line + "\n";
+                content.append(line + "\n");
             }
         }
         catch (IOException e) {
-            //TODO Нужно выбрать другой способ обработки исключений
-            e.printStackTrace();
+            return "Проблемы с загрузкой...";
         }
-        return content;
+        if (content == null)
+            return "Файлы пустые";
+        return content.toString();
     }
 
     private ArrayList<Question> loadQuestions(String content) {
         ArrayList<Question> questions = new ArrayList<>();
-        if(content == null) {
-            //TODO И чего это за if такой?!
-        }
-        else {
-            for(String q: content.split("\n\n\n")) {
-                questions.add(makeQuestion(q));
-            }
+        for(String q: content.split("\n\n\n")) {
+            questions.add(makeQuestion(q));
         }
         return questions;
     }
@@ -56,13 +51,8 @@ public class Load {
 
     private ArrayList<String> loadWords(String content) {
         ArrayList<String> words = new ArrayList<String>();
-        if(content == null) {
-            //TODO И чего это за if такой?!
-        }
-        else {
-            for(String q: content.split("\n"))
+        for(String q: content.split("\n"))
                 words.add(q);
-        }
         return words;
     }
 
