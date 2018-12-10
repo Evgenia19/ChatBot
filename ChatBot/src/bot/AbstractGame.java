@@ -7,7 +7,7 @@ public abstract class AbstractGame implements Game{
     private ArrayList<String> command = new ArrayList<String>();
 
     abstract public void start();
-    abstract public String messageForPlayer();
+    abstract public String getMessageOfGameForPlayer();
 
     public String end() {
         return "let's speak";
