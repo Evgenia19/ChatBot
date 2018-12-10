@@ -41,7 +41,7 @@ public class Quiz extends AbstractGame{
         setCommands(command);
     }
 
-    public String messageForPlayer() {
+    public String getMessageOfGameForPlayer() {
         return current.question;
     }
 
