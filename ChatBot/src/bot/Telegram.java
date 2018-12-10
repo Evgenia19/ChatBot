@@ -32,7 +32,6 @@ public class Telegram extends TelegramLongPollingBot{
         SendMessage sendMsg = new SendMessage();
         sendMsg.setChatId(id);
         sendMsg.setText(message.content);
-        System.out.println(message.commands);
         if(message.commands != null) {
                 ReplyKeyboardMarkup keyBoard = setButtons(message.commands);
                 sendMsg.setReplyMarkup(keyBoard);
