@@ -6,7 +6,7 @@ import java.util.Random;
 public class Hang extends AbstractGame{
 
     private Random random = new Random();
-    private Load loadQuestion;
+    private LoadFile loadQuestion;
     private ArrayList<String> words;
     private String word;
     private char[] answer;
@@ -69,7 +69,7 @@ public class Hang extends AbstractGame{
     }
 
     public String playHang(Character smb) {
-        Symbol(smb);
+        handlingSymbol(smb);
         if(!correct) {
             if(symbol == 0) {
                 result += 1;
@@ -96,6 +96,7 @@ public class Hang extends AbstractGame{
         setCommands(command);
     }
 
+    @Override
     public String getMessageOfGameForPlayer() {
         return "lives:" + lives + "\n" + getText();
     }
