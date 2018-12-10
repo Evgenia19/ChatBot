@@ -21,6 +21,7 @@ public class ActionBot {
         answer.add("21");
         answer.add("hang");
         answer.add("quiz");
+        answer.add("statistic");
         state = ChatBotState.Community;
         move.put(state.Community, answer);
         answer = blackJack.getCommands();
