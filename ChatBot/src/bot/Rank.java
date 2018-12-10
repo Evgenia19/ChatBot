@@ -1,7 +1,7 @@
 package bot;
 
 public enum Rank {
-	Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace;
+	Six, Seven, Eight, Nine, Ten, Ace, Jack, Queen, King;
 
 	private static final Rank[] Values = values();
 	private static final int Size = Values.length;
