@@ -42,6 +42,7 @@ public class Hang extends AbstractGame{
         }
     }
 
+    //TODO handling не очень удачное название
     private void handlingWord(ArrayList<String> words) {
         int numb = random.nextInt(words.size());
         word = words.get(numb);
@@ -54,10 +55,13 @@ public class Hang extends AbstractGame{
     }
 
     public String getText() {
+        //TODO А как же StringBuilder?
+        //TODO Вместо этого кода можно использовать String.join()
         String text = "";
         for (int i = 0; i < answer.length; i++) {
             text += answer[i] + " ";
         }
+
         return text;
     }
 

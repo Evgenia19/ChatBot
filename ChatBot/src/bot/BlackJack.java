@@ -104,6 +104,7 @@ public class BlackJack extends AbstractGame{
         return answer;
     }
 
+    //TODO Не очень удачное название
     public void stringResult(int summ/*TODO почему summ, а не sum?*/, String user) {
 		if(summ > 21) {
             more21 += user + "-" + summ + " ";
