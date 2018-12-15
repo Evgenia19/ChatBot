@@ -1,7 +1,6 @@
 package bot;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Quiz extends AbstractGame{
 
@@ -9,14 +8,14 @@ public class Quiz extends AbstractGame{
     private Question current;
     public int score = 0;
     private int questionsLeft;
-    private LoadFile loadQuestion;
+    private LoadFiles loadQuestion;
     public int numberQuestions = 0;
     private ArrayList<String> command;
 
     Quiz() {
         command = getCommands();
         returnCommandsOfGame();
-        loadQuestion = new LoadFile();
+        loadQuestion = new LoadFiles();
         questions = loadQuestion.returnQuestions();
         questionsLeft = questions.size();
     }

@@ -183,7 +183,7 @@ public class BotTest {
         bj.setSumPlayer(21);
         bot_1.process(new UserMessage(userId_1, "stop", null));
         UserMessage msg = bot_1.process(new UserMessage(userId_1, "statistic", null));
-        Assert.assertEquals("Statistic: \nBlackJack: 1 from 1 \nQuiz: 0 from 0 \nHang: 0 from 0", msg.content);
+        Assert.assertEquals("Statistic: \nBlackJack: 0 from 1 \nQuiz: 0 from 0 \nHang: 0 from 0", msg.content);
     }
 
 }

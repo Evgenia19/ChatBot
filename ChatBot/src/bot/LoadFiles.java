@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-//TODO Не очень удачное название
-public class LoadFile {
+
+public class LoadFiles {
     private	String fileQuestion = "questions.txt";
     private	String fileWord = "words.txt";
 

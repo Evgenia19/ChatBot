@@ -16,9 +16,9 @@ public class ChatBot {
     private AbstractGame game;
     private Statistic statistic;
     private Pattern pattern;
-    private BlackJack blackJack;
-    private Hang hang;
-    private Quiz quiz;
+    private BlackJack blackJack = new BlackJack();
+    private Hang hang = new Hang();
+    private Quiz quiz = new Quiz();
     private int result = 0;
     private int games = 0;
     private boolean weather = false;
@@ -39,59 +39,50 @@ public class ChatBot {
         if(state != ChatBotState.Community) {
             if(msg.content.equals("end")) {
                 getStatistic();
-                games = 0;
-                result = 0;
                 state = ChatBotState.Community;
                 return new UserMessage(userId, game.end(), move.get(state));
             }
-            return new UserMessage(userId, play(msg.content), move.get(state));
+            return new UserMessage(userId, getCommunicationInGame(msg.content), move.get(state));
         }
 
         switch(msg.content) {
             case "21":
                 state = ChatBotState.BlackJack;
-                return new UserMessage(userId, behavior21(), move.get(state));
+                return new UserMessage(userId, getBehavior21(), move.get(state));
             case "hang":
                 state = ChatBotState.Hang;
-                return new UserMessage(userId, BehaviorHang(), move.get(state));
+                return new UserMessage(userId, getBehaviorHang(), move.get(state));
             case "quiz":
                 state = ChatBotState.Quiz;
-                return new UserMessage(userId, BehaviorQuiz(), move.get(state));
+                return new UserMessage(userId, getBehaviorQuiz(), move.get(state));
         }
-        return new UserMessage(userId, communication(msg.content), move.get(state));
+        return new UserMessage(userId, getCommunicationWithUser(msg.content), move.get(state));
     }
 
-    //TODO Неудачное название метода. В методе где-то должен быть глагол.
-    private String play(String msg) {
-        return game(msg);
+    private String getCommunicationInGame(String msg) {
+        return getMsgWhenPlay(msg);
     }
 
-    //TODO Неудачное название метода. В методе где-то должен быть глагол.
-    private String communication(String msg) {
+    private String getCommunicationWithUser(String msg) {
         return getMessage(msg);
     }
 
-    //TODO Неудачное название метода. В методе где-то должен быть глагол.
-    private String behavior21() {
+    private String getBehavior21() {
         game = new BlackJack();
         return game.getBehavior();
     }
 
-    //TODO почему с большой буквы?
-    private String BehaviorHang() {
+    private String getBehaviorHang() {
         game = new Hang();
         return game.getBehavior();
     }
 
-    //TODO почему с большой буквы?
-    //TODO Неудачное
-    private String BehaviorQuiz() {
+    private String getBehaviorQuiz() {
         game = new Quiz();
         return game.getBehavior();
     }
 
-    //TODO Неудачное название метода. В методе где-то должен быть глагол.
-    public String game(String message) {
+    public String getMsgWhenPlay(String message) {
 
         ArrayList<String> command = move.get(state);
         for(String e: command) {
@@ -145,6 +136,8 @@ public class ChatBot {
             if (pattern.matcher(msg).find()) {
                 if("weather".equals(msg))
                     weather = true;
+                if("statistic".equals(msg))
+                    return statistic.getStatistic();
                 return ANSWERS_BY_PATTERNS.get(o.getValue());
             }
         }
@@ -156,7 +149,7 @@ public class ChatBot {
             // hello
             put("hi", "hello");
             put("weather", "weather");
-            // who // name
+            put("statistic", "statistic");
             put("help", "help");
             // bye
             put("bye", "bye");
@@ -167,7 +160,7 @@ public class ChatBot {
         {
             put("hello", "Hi my friend.");
             put("help", "My name Shaxter. I like community and play game. "
-                    + "I can play 21, hang, quiz. If you want play with me then you should write game");
+                    + "I can play 21, hang, quiz. If you want play with me then you should write called game");
             put("bye", "Goodbey.");
             put("weather", "Введите город...");
         }
@@ -217,17 +210,20 @@ public class ChatBot {
     private void getStatistic() {
         switch(state) {
             case BlackJack:
-                result += blackJack.result;
+                result = blackJack.result;
                 statistic.getStatistic21(games, result);
                 break;
             case Hang:
-                result += hang.result;
+                result = hang.result;
                 statistic.getStatisticHang(games, result);
                 break;
             case Quiz:
-                result += quiz.score;
+                result = quiz.score;
+                games = quiz.numberQuestions;
                 statistic.getStatisticQuiz(games, result);
                 break;
         }
+        games = 0;
+        result = 0;
     }
 }

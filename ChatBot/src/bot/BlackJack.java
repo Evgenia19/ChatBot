@@ -95,8 +95,8 @@ public class BlackJack extends AbstractGame{
     }
 
     public String getResultOfGame() {
-        stringResult(sumBot, "Shaxter");
-        stringResult(sumPlayer, "You");
+        setResult(sumBot, "Shaxter");
+        setResult(sumPlayer, "You");
         String answer = String.format("Победители, набравшие 21: %s\n" +
                 "Набравшие меньше 21: %s\nПеребравшие: %s", say21, less21, more21);
 		if(sumPlayer >= sumBot & sumPlayer <= winNumber)
@@ -104,16 +104,15 @@ public class BlackJack extends AbstractGame{
         return answer;
     }
 
-    //TODO Не очень удачное название
-    public void stringResult(int summ/*TODO почему summ, а не sum?*/, String user) {
-		if(summ > 21) {
-            more21 += user + "-" + summ + " ";
+    public void setResult(int sum, String user) {
+		if(sum > 21) {
+            more21 += user + "-" + sum + " ";
         }
-        if (summ < 21) {
-            less21 += user + "-" + summ + " ";
+        if (sum < 21) {
+            less21 += user + "-" + sum + " ";
         }
-        if(summ == 21)
-            say21 += user + "-" + summ + " ";
+        if(sum == 21)
+            say21 += user + "-" + sum + " ";
     }
 
     public Map<Card, Integer> getDictPlay() {

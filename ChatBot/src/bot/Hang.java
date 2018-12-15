@@ -6,7 +6,7 @@ import java.util.Random;
 public class Hang extends AbstractGame{
 
     private Random random = new Random();
-    private LoadFile loadQuestion;
+    private LoadFiles loadQuestion;
     private ArrayList<String> words;
     private String word;
     private char[] answer;
@@ -21,7 +21,7 @@ public class Hang extends AbstractGame{
     Hang() {
         command = getCommands();
         returnCommandsOfGame();
-        loadQuestion = new LoadFile();
+        loadQuestion = new LoadFiles();
         words = loadQuestion.returnWord();
     }
 
@@ -42,8 +42,7 @@ public class Hang extends AbstractGame{
         }
     }
 
-    //TODO handling не очень удачное название
-    private void handlingWord(ArrayList<String> words) {
+    public void choosingWord(ArrayList<String> words) {
         int numb = random.nextInt(words.size());
         word = words.get(numb);
         words.remove(numb);
@@ -55,14 +54,12 @@ public class Hang extends AbstractGame{
     }
 
     public String getText() {
-        //TODO А как же StringBuilder?
-        //TODO Вместо этого кода можно использовать String.join()
-        String text = "";
+        StringBuilder text = new StringBuilder();
         for (int i = 0; i < answer.length; i++) {
-            text += answer[i] + " ";
+            text.append(answer[i] + " ");
         }
 
-        return text;
+        return text.toString();
     }
 
     public String getMsgResultHang() {
@@ -89,7 +86,7 @@ public class Hang extends AbstractGame{
     @Override
     public void start() {
         game += 1;
-        handlingWord(words);
+        choosingWord(words);
     }
 
     private void returnCommandsOfGame() {

@@ -13,7 +13,7 @@ public class HangTest {
     @Test
     public void getLivesTest() {
         words.add("сходимость");
-        hang.handlingWord(words);
+        hang.choosingWord(words);
         hang.playHang('а');
         Assert.assertEquals(hang.getMessageOfGameForPlayer(), "lives:8\n_ _ _ _ _ _ _ _ _ _ ");
     }
@@ -21,14 +21,14 @@ public class HangTest {
     @Test
     public void getWordTest() {
         words.add("сходимость");
-        hang.handlingWord(words);
+        hang.choosingWord(words);
         Assert.assertEquals(hang.getMessageOfGameForPlayer(),"lives:9\n_ _ _ _ _ _ _ _ _ _ ");
     }
 
     @Test
     public void livesTest() {
         words.add("сходимость");
-        hang.handlingWord(words);
+        hang.choosingWord(words);
         hang.playHang('а');
         hang.playHang('о');
         hang.playHang('п');
@@ -39,7 +39,7 @@ public class HangTest {
     @Test
     public void getWinTest() {
         words.add("папа");
-        hang.handlingWord(words);
+        hang.choosingWord(words);
         hang.playHang('а');
         hang.playHang('о');
         hang.playHang('и');
@@ -51,7 +51,7 @@ public class HangTest {
     @Test
     public void getWrongTest() {
         words.add("сходимость");
-        hang.handlingWord(words);
+        hang.choosingWord(words);
         hang.playHang('а');
         hang.playHang('е');
         hang.playHang('и');
