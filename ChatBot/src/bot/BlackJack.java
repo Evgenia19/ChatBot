@@ -1,63 +1,39 @@
 package bot;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 
 public class BlackJack extends AbstractGame{
 
-    private Map<Card, Integer> playerCard = new HashMap<Card, Integer>();
-    private Map<Card, Integer> botCard = new HashMap<Card, Integer>();
-    private Integer sumPlayer = 0;
-    private Integer sumBot = 0;
+    private Pack pack;
+    private Set<Card> playerHand = new HashSet<>();
+    private Set<Card> botHand = new HashSet<>();
+
     public int result = 0;
     private ArrayList<String> command;
     private String say21 = "";
     private String more21 = "";
     private String less21 = "";
-    private int numberBeforeSmallCount = 5;
-    private int differentNumberBetweenCardAndPositionOfArrayForBigCard = 4;
-    private int getDifferentNumberBetweenCardAndPositionOfArrayForSmallCard = 6;
     private int sufficientAmount = 17;
-    private int winNumber = 21;
+    private int winScore = 21;
 
     BlackJack() {
+        pack = new Pack();
         command = getCommands();
         returnCommandsOfGame();
     }
-    
-	private void getCardForPlay(Map<Card, Integer> dictPlay) {
-        Card card = Card.pickRandom();
-        int handSum = card.rank.ordinal();
 
-        if(!botCard.containsKey(card) & !playerCard.containsKey(card)) {
-        	if(handSum > numberBeforeSmallCount)
-                handSum = handSum - differentNumberBetweenCardAndPositionOfArrayForBigCard;
-            else
-                handSum = handSum + getDifferentNumberBetweenCardAndPositionOfArrayForSmallCard;
-            dictPlay.put(card,handSum);
-        }
-        else
-            getCardForPlay(dictPlay);
-    }
-
-    private int getSumCardOnHand(Map<Card, Integer> dictPlay) {
-        int sumCard = 0;
-        for(int e : dictPlay.values()) {
-            sumCard += e;
-        }
-        return sumCard;
+    private static int getHandScore(Set<Card> hand) {
+        return hand.stream().mapToInt(Card::getScore).sum();
     }
     
     @Override
     public void start() {
-        getCardForPlay(botCard);
-        getCardForPlay(botCard);
-        getCardForPlay(playerCard);
-        getCardForPlay(playerCard);
-        playGame();
+        botHand.addAll(pack.pickMany(2));
+        playerHand.addAll(pack.pickMany(2));
 
+        while(getHandScore(botHand) <= sufficientAmount) {
+            botHand.add(pack.pick());
+        }
     }
 
     private void returnCommandsOfGame() {
@@ -70,36 +46,23 @@ public class BlackJack extends AbstractGame{
         setCommands(command);
     }
 
-    private void playGame() {
-        sumPlayer = getSumCardOnHand(playerCard);
-        sumBot = getSumCardOnHand(botCard);
-		while(sumBot <= sufficientAmount) {
-            getCardForPlay(botCard);
-            sumBot = getSumCardOnHand(botCard);
-        }
-    }
-
-	public String getMessageOfGameForPlayer() {
-        StringBuilder card =  new StringBuilder();
-        for(Card e : playerCard.keySet())
-            card.append(e.toString() + " ");
-        return "You card: " + card + "\n" + "result summ: " + sumPlayer.toString();
+    public String getMessageOfGameForPlayer() {
+        return "You card: " + StringHelpers.join(' ', playerHand) + "\n" + "result sum: " + getHandScore(playerHand);
     }
 
     public String addCard() {
-        getCardForPlay(playerCard);
-        sumPlayer = getSumCardOnHand(playerCard);
-        if(sumPlayer > 21)
-            return getResultOfGame();
-        return getMessageOfGameForPlayer();
+        playerHand.add(pack.pick());
+        return getHandScore(playerHand) > winScore
+                ? getResultOfGame()
+                : getMessageOfGameForPlayer();
     }
 
     public String getResultOfGame() {
-        setResult(sumBot, "Shaxter");
-        setResult(sumPlayer, "You");
+        setResult(getHandScore(botHand), "Shaxter");
+        setResult(getHandScore(playerHand), "You");
         String answer = String.format("Победители, набравшие 21: %s\n" +
                 "Набравшие меньше 21: %s\nПеребравшие: %s", say21, less21, more21);
-		if(sumPlayer >= sumBot & sumPlayer <= winNumber)
+		if(getHandScore(playerHand) >= getHandScore(playerHand) & getHandScore(playerHand) <= winScore)
             result += 1;
         return answer;
     }
@@ -116,20 +79,21 @@ public class BlackJack extends AbstractGame{
     }
 
     public Map<Card, Integer> getDictPlay() {
-        return playerCard;
+        return new HashMap<>();
     }
+
     public int getSumPlayer(Map<Card, Integer> hand) {
-        return getSumCardOnHand(hand);
+        return getHandScore(hand.keySet());
     }
     public void setHandPlayer(Map<Card, Integer> hand) {
-        playerCard = hand;
+        playerHand = hand.keySet();
     }
 
     public void setSumPlayer(int sum) {
-        sumPlayer = sum;
+
     }
 
     public void setSumBot(int sum) {
-        sumBot = sum;
+
     }
 }
