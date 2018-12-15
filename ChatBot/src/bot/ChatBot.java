@@ -1,8 +1,6 @@
 package bot;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 //TODO Попробуйте проговорить для себя за что именно отвечать ChatBot. Пока для себя я это сформулировать не смог :(
@@ -34,8 +32,6 @@ public class ChatBot {
     }
 
     public UserMessage process(UserMessage msg) {
-
-        System.out.println(games + result);
         if(state != ChatBotState.Community) {
             if(msg.content.equals("end")) {
                 getStatistic();
@@ -159,19 +155,48 @@ public class ChatBot {
     final Map<String, String> ANSWERS_BY_PATTERNS = new HashMap<String, String>() {
         {
             put("hello", "Hi my friend.");
-            put("help", "My name Shaxter. I like community and play game. "
+            put("help", "My name Shaaxter. I like community and play game. "
                     + "I can play 21, hang, quiz. If you want play with me then you should write called game");
-            put("bye", "Goodbey.");
+            put("bye", "Goodbye.");
             put("weather", "Введите город...");
         }
     };
 
     private String stop21() {
-        return blackJack.getResultOfGame();
+        int sumBot = blackJack.returnHandScore(blackJack.getBotHand());
+        int sumPlayer = blackJack.returnHandScore(blackJack.getPlayerHand());
+        if(sumPlayer >= sumBot & sumPlayer <= 21)
+            result += 1;
+        Map<String, Integer> result = new HashMap<>();
+        result.put("You", sumPlayer);
+        result.put("Shaaxter", sumBot);
+        return setResult(result);
+
+    }
+
+    private String setResult(Map<String, Integer> result) {
+        StringBuilder more21 = new StringBuilder();
+        StringBuilder less21 = new StringBuilder();
+        StringBuilder good21 = new StringBuilder();
+        for(String e : result.keySet()) {
+            int sum = result.get(e);
+            if (sum > 21) {
+                more21.append(e + "-" + sum + " ");
+            }
+            if (sum < 21) {
+                less21.append(e + "-" + sum + " ");
+            }
+            if (sum == 21)
+                good21.append(e + "-" + sum + " ");
+        }
+        return String.format("Победители, набравшие 21: %s\n" +
+                "Набравшие меньше 21: %s\nПеребравшие: %s", good21, less21, more21);
     }
 
     private String addCard() {
-        return blackJack.addCard();
+        blackJack.addCard();
+        int sumPlayer = blackJack.returnHandScore(blackJack.getPlayerHand());
+        return sumPlayer > 21 ? stop21() : getMessageOfGameForPlayer();
     }
 
     private String start() {
@@ -191,7 +216,7 @@ public class ChatBot {
         games += 1;
         blackJack = new BlackJack();
         blackJack.start();
-        return blackJack.getMessageOfGameForPlayer();
+        return getMessageOfGameForPlayer();
     }
 
     private String startHang() {
@@ -210,7 +235,6 @@ public class ChatBot {
     private void getStatistic() {
         switch(state) {
             case BlackJack:
-                result = blackJack.result;
                 statistic.getStatistic21(games, result);
                 break;
             case Hang:
@@ -226,4 +250,11 @@ public class ChatBot {
         games = 0;
         result = 0;
     }
+
+    private String getMessageOfGameForPlayer() {
+        Set<Card> playerHand = blackJack.getPlayerHand();
+        int score = blackJack.returnHandScore(playerHand);
+        return "You card: " + StringHelpers.join(' ', playerHand) + "\n" + "result sum: " + score;
+    }
+
 }

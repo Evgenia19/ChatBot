@@ -7,14 +7,8 @@ public class BlackJack extends AbstractGame{
     private Pack pack;
     private Set<Card> playerHand = new HashSet<>();
     private Set<Card> botHand = new HashSet<>();
-
-    public int result = 0;
     private ArrayList<String> command;
-    private String say21 = "";
-    private String more21 = "";
-    private String less21 = "";
     private int sufficientAmount = 17;
-    private int winScore = 21;
 
     BlackJack() {
         pack = new Pack();
@@ -46,54 +40,31 @@ public class BlackJack extends AbstractGame{
         setCommands(command);
     }
 
-    public String getMessageOfGameForPlayer() {
-        return "You card: " + StringHelpers.join(' ', playerHand) + "\n" + "result sum: " + getHandScore(playerHand);
-    }
-
-    public String addCard() {
+    private void addCardForPlayer() {
         playerHand.add(pack.pick());
-        return getHandScore(playerHand) > winScore
-                ? getResultOfGame()
-                : getMessageOfGameForPlayer();
     }
 
-    public String getResultOfGame() {
-        setResult(getHandScore(botHand), "Shaxter");
-        setResult(getHandScore(playerHand), "You");
-        String answer = String.format("Победители, набравшие 21: %s\n" +
-                "Набравшие меньше 21: %s\nПеребравшие: %s", say21, less21, more21);
-		if(getHandScore(playerHand) >= getHandScore(playerHand) & getHandScore(playerHand) <= winScore)
-            result += 1;
-        return answer;
+    public void addCard() {
+        addCardForPlayer();
     }
 
-    public void setResult(int sum, String user) {
-		if(sum > 21) {
-            more21 += user + "-" + sum + " ";
-        }
-        if (sum < 21) {
-            less21 += user + "-" + sum + " ";
-        }
-        if(sum == 21)
-            say21 += user + "-" + sum + " ";
+    public Set<Card> getPlayerHand() {
+        return playerHand;
     }
 
-    public Map<Card, Integer> getDictPlay() {
-        return new HashMap<>();
+    public int returnHandScore(Set<Card> userHand) {
+        return getHandScore(userHand);
     }
 
-    public int getSumPlayer(Map<Card, Integer> hand) {
-        return getHandScore(hand.keySet());
-    }
-    public void setHandPlayer(Map<Card, Integer> hand) {
-        playerHand = hand.keySet();
+    public Set<Card> getBotHand() {
+        return botHand;
     }
 
-    public void setSumPlayer(int sum) {
-
+    public void setBotHand(Set<Card> hand) {
+        botHand = hand;
     }
 
-    public void setSumBot(int sum) {
-
+    public void setPlayerHand(Set<Card> hand) {
+        playerHand = hand;
     }
 }

@@ -179,8 +179,8 @@ public class BotTest {
         ChatBot bot_1 = new ChatBot(userId_1);
         bot_1.process(new UserMessage(userId_1, "21", null));
         bot_1.process(new UserMessage(userId_1, "start", null));
-        bj.setSumBot(19);
-        bj.setSumPlayer(21);
+        //bj.setSumBot(19);
+        //bj.setSumPlayer(21);
         bot_1.process(new UserMessage(userId_1, "stop", null));
         UserMessage msg = bot_1.process(new UserMessage(userId_1, "statistic", null));
         Assert.assertEquals("Statistic: \nBlackJack: 0 from 1 \nQuiz: 0 from 0 \nHang: 0 from 0", msg.content);

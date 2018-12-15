@@ -97,7 +97,6 @@ public class Hang extends AbstractGame{
         setCommands(command);
     }
 
-    @Override
     public String getMessageOfGameForPlayer() {
         return "lives:" + lives + "\n" + getText();
     }
