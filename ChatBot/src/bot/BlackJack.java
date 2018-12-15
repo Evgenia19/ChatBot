@@ -7,12 +7,14 @@ import java.util.Set;
 public class BlackJack extends AbstractGame{
 
     private Pack pack;
+    private Hand hand;
     private Set<Card> playerHand = new HashSet<>();
     private Set<Card> botHand = new HashSet<>();
     private ArrayList<String> command;
     private int sufficientAmount = 17;
 
     BlackJack() {
+        hand = new Hand();
         pack = new Pack();
         command = getCommands();
         returnCommandsOfGame();

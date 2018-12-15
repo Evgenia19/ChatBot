@@ -1,4 +1,7 @@
 package bot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,6 +11,8 @@ import java.util.ArrayList;
 
 
 public class LoadFiles {
+
+    private static Logger logger = LogManager.getLogger(LoadFiles.class.getName());
     private	String fileQuestion = "questions.txt";
     private	String fileWord = "words.txt";
 
@@ -21,6 +26,7 @@ public class LoadFiles {
             }
         }
         catch (IOException e) {
+            logger.fatal("fatal error message: " + e.getMessage());
             return "Проблемы с загрузкой...";
         }
         if (content == null)

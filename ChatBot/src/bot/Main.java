@@ -1,8 +1,11 @@
 package bot;
 import java.util.Scanner;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class Main {
+	private static Logger logger = LogManager.getLogger();
 	public static void main(String[] args) {
 		MultiUserBot multiUser = new MultiUserBot();
 		String id = null;
@@ -24,7 +27,9 @@ public class Main {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.fatal("fatal error message: " + e.getMessage());
+				System.out.println("Shaaxter: I have a problem");
+
 			}
 		}
 	}

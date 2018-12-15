@@ -1,5 +1,7 @@
 package bot;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,18 +14,21 @@ import java.util.Scanner;
 
 public class Weather {
 
-    public static String getWeather(String message, Model model) throws IOException {
-        StringBuilder result;
+
+    private static Logger logger = LogManager.getLogger(Weather.class.getName());
+
+    public static String getWeather(String message, Model model) {
+        StringBuilder result = new StringBuilder();;
         try(Scanner in = new Scanner((InputStream) new URL("http://api.openweathermap.org/data/2.5/weather?q="
                 + message
                 + "&units=metric&appid=6fff53a641b9b9a799cfd6b079f5cd4e").getContent())) {
-            result = new StringBuilder();
             while (in.hasNext()) {
                 result.append(in.nextLine());
             }
         }
         catch (IOException e) {
-            return "Город не найден!";
+            logger.fatal("fatal error message: " + e.getMessage());
+            return "I have a problem";
         }
 
         String weather = result.toString();

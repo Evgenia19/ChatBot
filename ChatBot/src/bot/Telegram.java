@@ -1,6 +1,7 @@
 package bot;
 import java.util.ArrayList;
-
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -15,6 +16,7 @@ public class Telegram extends TelegramLongPollingBot{
     final String token = "762263340:AAFoaj9m76NXSHuzlvmAuPECW9thZktu86s";
     final String botUserName = "Chat19Bot";
     private MultiUserBot multiUser = new MultiUserBot();
+    private static Logger logger = LogManager.getLogger(Telegram.class.getName());
 
     @Override
     public String getBotUsername() {
@@ -39,7 +41,7 @@ public class Telegram extends TelegramLongPollingBot{
         try {
             execute(sendMsg);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            logger.fatal("fatal error message: " + e.getMessage());
         }
 
     }
@@ -49,11 +51,11 @@ public class Telegram extends TelegramLongPollingBot{
         return token;
     }
 
-    public synchronized ReplyKeyboardMarkup setButtons(ArrayList<String> comands) {
+    public synchronized ReplyKeyboardMarkup setButtons(ArrayList<String> commands) {
         ArrayList<KeyboardRow> keyboard = new ArrayList<>();
-        for (String comand: comands) {
+        for (String command: commands) {
             KeyboardRow key = new KeyboardRow();
-            key.add(comand);
+            key.add(command);
             keyboard.add(key);
         }
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
@@ -68,7 +70,7 @@ public class Telegram extends TelegramLongPollingBot{
         try {
             botApi.registerBot(new Telegram());
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            logger.fatal("fatal error message: " + e.getMessage());
         }
     }
 }
