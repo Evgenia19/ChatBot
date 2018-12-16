@@ -28,7 +28,7 @@ public class BotTest {
         ChatBot bot_1 = new ChatBot(userId_1);
         UserMessage msg = bot_1.process(new UserMessage(userId_1, "help", null));
         Assert.assertEquals(
-                "My name Shaxter. I like community and play game."
+                "My name Shaaxter. I like community and play game."
                         + " I can play 21, hang, quiz. If you want play with me then you should write called game",
                 msg.content);
     }
@@ -144,7 +144,7 @@ public class BotTest {
         ChatBot bot_1 = new ChatBot(userId_1);
         bot_1.process(new UserMessage(userId_1, "weather", null));
         UserMessage msg = bot_1.process(new UserMessage(userId_1, "asasasas", null));
-        Assert.assertEquals("Город не найден!", msg.content);
+        Assert.assertEquals("I have a problem", msg.content);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class BotTest {
         bot_1.process(new UserMessage(userId_1, "weather", null));
         bot_1.process(new UserMessage(userId_1, "help", null));
         UserMessage msg = bot_1.process(new UserMessage(userId_1, "help", null));
-        Assert.assertEquals("My name Shaxter. I like community and play game. I can play 21, " +
+        Assert.assertEquals("My name Shaaxter. I like community and play game. I can play 21, " +
                 "hang, quiz. If you want play with me then you should write called game", msg.content);
     }
 

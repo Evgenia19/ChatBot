@@ -15,14 +15,14 @@ public class HangTest {
         words.add("сходимость");
         hang.choosingWord(words);
         hang.playHang('а');
-        Assert.assertEquals(hang.getMessageOfGameForPlayer(), "lives:8\n_ _ _ _ _ _ _ _ _ _ ");
+        Assert.assertEquals(hang.getMessageOfGameForPlayer(), "lives: 8\n _ _ _ _ _ _ _ _ _ _");
     }
 
     @Test
     public void getWordTest() {
         words.add("сходимость");
         hang.choosingWord(words);
-        Assert.assertEquals(hang.getMessageOfGameForPlayer(),"lives:9\n_ _ _ _ _ _ _ _ _ _ ");
+        Assert.assertEquals(hang.getMessageOfGameForPlayer(),"lives: 9\n _ _ _ _ _ _ _ _ _ _");
     }
 
     @Test
@@ -33,7 +33,7 @@ public class HangTest {
         hang.playHang('о');
         hang.playHang('п');
         hang.playHang('и');
-        Assert.assertEquals(hang.getMessageOfGameForPlayer(), "lives:7\n_ _ о _ и _ о _ _ _ ");
+        Assert.assertEquals(hang.getMessageOfGameForPlayer(), "lives: 7\n _ _ о _ и _ о _ _ _");
     }
 
     @Test
@@ -43,9 +43,7 @@ public class HangTest {
         hang.playHang('а');
         hang.playHang('о');
         hang.playHang('и');
-        //hang.playHang('п');
-        //Assert.assertEquals(hang.getMessageOfGameForPlayer(), "lives:7\nп а п а");
-        Assert.assertEquals(hang.playHang('п'), "You win\nп а п а ");
+        Assert.assertEquals(hang.playHang('п'), "You win\n п а п а");
     }
 
     @Test

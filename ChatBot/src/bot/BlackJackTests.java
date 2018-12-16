@@ -28,15 +28,15 @@ public class BlackJackTests {
 
     @Test
     public void getCardTest() {
-        boolean check = true;
+        boolean checking = true;
         setHandPlayer();
         blackJack.setPlayerHand(handPlayer);
         blackJack.addCard();
         Set<Card> handPlayerNew = blackJack.getPlayerHand();
-        //if(handPlayer.equals(handPlayerNew))
-          //  check = false;
+        if(new Hand(handPlayerNew).sum > new Hand(handPlayer).sum)
+            checking = false;
 
-        Assert.assertEquals(check, true);
+        Assert.assertEquals(checking, true);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class BlackJackTests {
         setHandPlayer();
         setHandBot();
         boolean flag = false;
-        if(blackJack.returnHandScore(handPlayer) < blackJack.returnHandScore(handBot))
+        if(new Hand(handPlayer).sum < new Hand(handBot).sum)
             flag = true;
         Assert.assertEquals(flag, true);
     }
@@ -55,7 +55,7 @@ public class BlackJackTests {
         handPlayer = new HashSet<>();
         handPlayer.add(new Card(Suit.Clubs, Rank.Ace));
         handPlayer.add(new Card(Suit.Hearts, Rank.Ten));
-        if(blackJack.returnHandScore(handPlayer) > blackJack.returnHandScore(handBot))
+        if(new Hand(handPlayer).sum > new Hand(handBot).sum)
             statistic.getStatistic21(1, 1);
         Assert.assertEquals(statistic.getStatistic(), "Statistic: \n" +
                 "BlackJack: 1 from 1 \n" +
@@ -69,12 +69,12 @@ public class BlackJackTests {
         blackJack.start();
         Set<Card> dict = blackJack.getPlayerHand();
         sum = dict.stream().mapToInt(Card::getScore).sum();
-        Assert.assertEquals(blackJack.returnHandScore(dict), sum);
+        Assert.assertEquals(new Hand(dict).sum, sum);
     }
 
     @Test
     public void getSumTest() {
         setHandPlayer();
-        Assert.assertEquals(blackJack.returnHandScore(handPlayer), 15);
+        Assert.assertEquals(new Hand(handPlayer).sum, 15);
     }
 }

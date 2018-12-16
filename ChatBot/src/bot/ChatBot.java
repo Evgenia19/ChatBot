@@ -78,7 +78,7 @@ public class ChatBot {
         return game.getBehavior();
     }
 
-    public String getMsgWhenPlay(String message) {
+    private String getMsgWhenPlay(String message) {
 
         ArrayList<String> command = move.get(state);
         for(String e: command) {
@@ -117,14 +117,10 @@ public class ChatBot {
         return "if you want communication then you should write: end, but if you want play, you should write - start";
     }
 
-    public String getMessage(String message) {
+    private String getMessage(String message) {
         if(weather == true){
-            try {
-                weather = false;
-                return  Weather.getWeather(message, model);
-            } catch (IOException e) {
-                return "Город не найден!";
-            }
+            weather = false;
+            return  Weather.getWeather(message, model);
         }
         String msg = String.join(" ", message.toLowerCase().split("[ {,|.}?]+"));
         for (Map.Entry<String, String> o : PATTERNS_FOR_ANALYSIS.entrySet()) {
@@ -163,8 +159,8 @@ public class ChatBot {
     };
 
     private String stop21() {
-        int sumBot = blackJack.returnHandScore(blackJack.getBotHand());
-        int sumPlayer = blackJack.returnHandScore(blackJack.getPlayerHand());
+        int sumBot = new Hand(blackJack.getBotHand()).sum;
+        int sumPlayer = new Hand(blackJack.getPlayerHand()).sum;
         if(sumPlayer >= sumBot & sumPlayer <= 21)
             result += 1;
         Map<String, Integer> result = new HashMap<>();
@@ -195,7 +191,7 @@ public class ChatBot {
 
     private String addCard() {
         blackJack.addCard();
-        int sumPlayer = blackJack.returnHandScore(blackJack.getPlayerHand());
+        int sumPlayer = new Hand(blackJack.getPlayerHand()).sum;
         return sumPlayer > 21 ? stop21() : getMessageOfGameForPlayer();
     }
 
@@ -253,7 +249,7 @@ public class ChatBot {
 
     private String getMessageOfGameForPlayer() {
         Set<Card> playerHand = blackJack.getPlayerHand();
-        int score = blackJack.returnHandScore(playerHand);
+        int score = new Hand(playerHand).sum;
         return "You card: " + StringHelpers.join(' ', playerHand) + "\n" + "result sum: " + score;
     }
 

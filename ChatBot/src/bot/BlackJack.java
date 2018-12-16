@@ -1,36 +1,29 @@
 package bot;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 
 public class BlackJack extends AbstractGame{
 
     private Pack pack;
-    private Hand hand;
-    private Set<Card> playerHand = new HashSet<>();
-    private Set<Card> botHand = new HashSet<>();
+    private Hand playerHand;
+    private Hand botHand;
     private ArrayList<String> command;
     private int sufficientAmount = 17;
 
     BlackJack() {
-        hand = new Hand();
         pack = new Pack();
         command = getCommands();
         returnCommandsOfGame();
     }
-
-    private static int getHandScore(Set<Card> hand) {
-        return hand.stream().mapToInt(Card::getScore).sum();
-    }
     
     @Override
     public void start() {
-        botHand.addAll(pack.pickMany(2));
-        playerHand.addAll(pack.pickMany(2));
+        botHand = new Hand(pack.pickMany(2));
+        playerHand = new Hand(pack.pickMany(2));
 
-        while(getHandScore(botHand) <= sufficientAmount) {
-            botHand.add(pack.pick());
+        while(botHand.sum <= sufficientAmount) {
+            botHand.addCard(pack.pick());
         }
     }
 
@@ -45,30 +38,22 @@ public class BlackJack extends AbstractGame{
     }
 
     private void addCardForPlayer() {
-        playerHand.add(pack.pick());
+        playerHand.addCard(pack.pick());
     }
 
     public void addCard() {
         addCardForPlayer();
     }
 
-    public Set<Card> getPlayerHand() {
-        return playerHand;
+    public void setPlayerHand(Set<Card> card) {
+        playerHand = new Hand(card);
     }
 
-    public int returnHandScore(Set<Card> userHand) {
-        return getHandScore(userHand);
+    public Set<Card> getPlayerHand() {
+        return playerHand.getCards();
     }
 
     public Set<Card> getBotHand() {
-        return botHand;
-    }
-
-    public void setBotHand(Set<Card> hand) {
-        botHand = hand;
-    }
-
-    public void setPlayerHand(Set<Card> hand) {
-        playerHand = hand;
+        return botHand.getCards();
     }
 }

@@ -21,7 +21,7 @@ public class Pack
         List<Card> pickedCards = new ArrayList<>();
         while(count > 0 && !cards.isEmpty()) {
             pickedCards.add(cards.remove(cards.size() - 1));
-            --count;
+            count--;
         }
         return pickedCards;
     }

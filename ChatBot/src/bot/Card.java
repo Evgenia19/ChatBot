@@ -19,10 +19,6 @@ public class Card {
         this.rank = rank;
     }
 
-    public static Card pickRandom() {
-        return new Card(Suit.pickRandom(), Rank.pickRandom());
-    }
-
     public static Set<Card> values() {
         Set<Card> cards = new HashSet<>();
         for(Suit suit : Suit.values()) {
