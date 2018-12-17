@@ -27,7 +27,7 @@ public class Weather {
             }
         }
         catch (IOException e) {
-            logger.fatal("fatal error message: " + e.getMessage());
+            logger.warn("warn error message: " + e.getMessage());
             return "I have a problem";
         }
 

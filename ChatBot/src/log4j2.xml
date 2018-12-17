@@ -3,15 +3,7 @@
     <!-- Секция аппендеров -->
     <Appenders>
         <!-- Файловый аппендер -->
-        <File name="file" fileName="ChatBot\\log\\log.log">
-            <PatternLayout>
-                <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
-            </PatternLayout>
-        </File>
-        <!-- Файловый аппендер -->
-        <File name="file2" fileName="ChatBot\\log\\log2.log">
-            <!-- Фильтр по маркеру -->
-            <MarkerFilter marker="fileonly" onMatch="DENY" onMismatch="ACCEPT"/>
+        <File name="file" fileName="log\\log.log">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m %ex%n</Pattern>
             </PatternLayout>
@@ -21,11 +13,7 @@
     <Loggers>
         <!-- Корневой логгер -->
         <Root level="trace">
-            <AppenderRef ref="file" level="DEBUG"/>
+            <AppenderRef ref="file" level="INFO"/>
         </Root>
-        <!-- Логгер нашего класса -->
-        <Logger name="logging.log4j.LoggingLog4j" level="info" additivity="false">
-            <AppenderRef ref="file2" level="INFO"/>
-        </Logger>
     </Loggers>
 </Configuration>

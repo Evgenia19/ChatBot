@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 public class Main {
 	private static Logger logger = LogManager.getLogger();
 	public static void main(String[] args) {
+		logger.info("info: program start");
 		MultiUserBot multiUser = new MultiUserBot();
 		String id = null;
 		Scanner input = new Scanner(System.in);

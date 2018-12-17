@@ -22,7 +22,7 @@ public class BlackJack extends AbstractGame{
         botHand = new Hand(pack.pickMany(2));
         playerHand = new Hand(pack.pickMany(2));
 
-        while(botHand.sum <= sufficientAmount) {
+        while(botHand.getSum() <= sufficientAmount) {
             botHand.addCard(pack.pick());
         }
     }

@@ -159,9 +159,9 @@ public class ChatBot {
     };
 
     private String stop21() {
-        int sumBot = new Hand(blackJack.getBotHand()).sum;
-        int sumPlayer = new Hand(blackJack.getPlayerHand()).sum;
-        if(sumPlayer >= sumBot & sumPlayer <= 21)
+        int sumBot = new Hand(blackJack.getBotHand()).getSum();
+        int sumPlayer = new Hand(blackJack.getPlayerHand()).getSum();
+        if((sumPlayer >= sumBot | sumBot > 21) & sumPlayer <= 21)
             result += 1;
         Map<String, Integer> result = new HashMap<>();
         result.put("You", sumPlayer);
@@ -191,7 +191,7 @@ public class ChatBot {
 
     private String addCard() {
         blackJack.addCard();
-        int sumPlayer = new Hand(blackJack.getPlayerHand()).sum;
+        int sumPlayer = new Hand(blackJack.getPlayerHand()).getSum();
         return sumPlayer > 21 ? stop21() : getMessageOfGameForPlayer();
     }
 
@@ -249,7 +249,7 @@ public class ChatBot {
 
     private String getMessageOfGameForPlayer() {
         Set<Card> playerHand = blackJack.getPlayerHand();
-        int score = new Hand(playerHand).sum;
+        int score = new Hand(playerHand).getSum();
         return "You card: " + StringHelpers.join(' ', playerHand) + "\n" + "result sum: " + score;
     }
 

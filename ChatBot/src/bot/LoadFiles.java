@@ -26,7 +26,7 @@ public class LoadFiles {
             }
         }
         catch (IOException e) {
-            logger.fatal("fatal error message: " + e.getMessage());
+            logger.warn("warn error message: " + e.getMessage());
             return "Проблемы с загрузкой...";
         }
         if (content == null)
