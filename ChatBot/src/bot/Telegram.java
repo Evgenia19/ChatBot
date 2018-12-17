@@ -51,7 +51,7 @@ public class Telegram extends TelegramLongPollingBot{
         return token;
     }
 
-    public synchronized ReplyKeyboardMarkup setButtons(ArrayList<String> commands) {
+    public ReplyKeyboardMarkup setButtons(ArrayList<String> commands) {
         ArrayList<KeyboardRow> keyboard = new ArrayList<>();
         for (String command: commands) {
             KeyboardRow key = new KeyboardRow();
